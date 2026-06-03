@@ -1,0 +1,120 @@
+/* =========================
+   MAIN CONTENT
+========================= */
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1118px;
+  height: 100%;
+  max-height: 811px;
+}
+
+
+/* =========================
+   EMPTY / ASSISTANT STATE
+========================= */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  background:var(--white);
+  width: 544px;
+  border-radius: 14px;
+  border: 1px solid var(--color300);
+  gap: 1rem;
+}
+
+/* ANIMATION */
+.robot {
+	animation: robotTilt 2s ease-in-out infinite;
+	/* point de rotation */
+	transform-origin: center bottom;
+	}
+
+@keyframes robotTilt {
+	0% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(-10deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}
+
+/* DESCRIPTION */
+.assistantText {
+  color: var(--color700);
+  text-align: center;
+}
+
+/* EXEMPLES */
+.examples {
+  text-align: center;
+}
+.examplesTitle {
+  font-size: var(--bodyxs);
+  font-weight: 700;
+  color: var(--color700);
+  margin-bottom: 0.5rem;
+}
+.examplesList li {
+  margin-bottom: 0.5rem;
+  color: var(--color800);
+}
+
+/* =========================
+   INPUT BAR (BOTTOM)
+========================= */
+.inputBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 17px 71px;
+
+  height: 93px;
+
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* INPUT */
+.input {
+  flex: 1;
+
+  height: 60px;
+
+  padding: 8px 12px;
+
+  background: #f5f5f7;
+  border-radius: 8px;
+
+  border: none;
+
+  font-size: 14px;
+  font-family: "Inter";
+  color: #2a2a31;
+}
+
+/* BUTTON SEND */
+.sendButton {
+  width: 48px;
+  height: 40px;
+
+  background: #cacad5;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  cursor: pointer;
+}

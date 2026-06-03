@@ -1,0 +1,80 @@
+/* Arrière-plan de la modale */
+.overlay {
+  position: fixed;
+  inset: 0; 
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100; 
+}
+
+.content {
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color:var(--color300);
+  padding: 3rem; 
+  border-radius: 10px;
+  max-width: 556px;
+  width: 90%;
+  z-index: 101;
+  overflow-y: auto;
+  max-height: calc(100vh - 4rem);
+}
+
+.closeButton{
+	all: unset;
+	font-size: var(--body2xs);
+	color: var(--color800);
+	display: block;
+	margin-left: auto;
+	cursor: pointer;
+	margin-bottom: 3rem;
+}
+.title{
+	margin-bottom: 1rem;
+	font-size: var(--headings);
+	text-align: center;
+	font-family: var(--font-ibm);
+}
+.subTitle{
+	margin-bottom: 2rem;
+	font-size: var(--bodyxs);
+	text-align: center;
+	color: var(--color800);
+
+
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.field label {
+  margin-bottom: 0.5rem;
+  font-size: var(--bodys);
+
+}
+.field input{
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: var(--color500);
+  border-radius: 8px;
+  border: none;
+}
+.btn{
+  all: unset;
+  width: 100%;
+  height: 41px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: var(--dark);
+  border-radius: 4px;
+  border: none;
+  color: var(--white);
+  text-align: center;
+  font-size: var(--bodyxs);
+  cursor: pointer;
+}
+

@@ -1,0 +1,14 @@
+/* =========================
+   BUTTONS
+========================= */
+.btn{
+	all:unset;
+	border-radius: 8px;
+	padding : 10px 20px;
+	background-color: var(--header);
+	color: var(--color100);
+	font-weight: 700;
+}
+
+
+

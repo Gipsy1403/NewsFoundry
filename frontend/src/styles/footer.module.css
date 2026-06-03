@@ -1,0 +1,61 @@
+/* =========================
+   INPUT BAR (BOTTOM)
+========================= */
+.footer{
+	display: flex;
+	background: var(--color100);
+}
+.logout {
+  display: flex;
+  align-items: center;
+  font-size: var(--bodyxs);
+  max-width: 322px;
+  width: 100%;
+  padding: 20px;
+  /* flex: 1; */
+  gap: 10px;
+  cursor: pointer;
+  background-color: var(--color100);
+  /* height: 127px; */
+
+}
+.btnLogout{
+	all: unset;
+}
+.inputBar {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  /* padding: 17px 71px; */
+  height: 93px;
+  /* flex: 1 auto; */
+  flex: 1;
+  gap: 10px;
+}
+
+/* INPUT */
+.input {
+  flex: 1;
+  height: 60px;
+  padding: 8px 12px;
+  background:var(--color200);
+  border-radius: 8px;
+  max-width: 919px;
+  border: none;
+  font-size: var(--bodyxs);
+}
+
+/* BUTTON SEND */
+.sendButton {
+  flex:0 0 48px;
+  width: 48px;
+  height: 40px;
+  background: var(--color500);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  color: var(--white);
+}

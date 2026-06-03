@@ -1,0 +1,62 @@
+/* =========================
+   LOG IN
+========================= */
+
+.container{
+	background-image:   linear-gradient(
+    rgba(42, 42, 49, 0.9),
+    rgba(42, 42, 49, 0.9)
+  ), url(/IMGAppli/backgroundImage.jpg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.login{
+	background-color: var(--color300);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	max-height: 336px;
+	max-width: 448px;
+	padding: 3rem;
+	border: 1px var(--color300);
+	border-radius: 14px;
+}
+.text{
+	font-size: var(--bodyxs);
+	color: var(--color800);
+	text-align: center;
+	margin:1.5rem 0;
+}
+.form{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 0.8rem;
+}
+.input{
+	height: 36px;
+	border-radius: 8px;
+	padding: 4px 12px;
+	border: none;
+	background-color: var(--color400);
+	font-size: var(--bodyxs);
+}
+.btn{
+	height: 41px;
+	border-radius: 4px;
+	padding: 12px 24px;
+	border: none;
+	background-color: var(--dark);
+	font-size: var(--bodyxs);
+	color: var(--color100);
+}
+
+
+

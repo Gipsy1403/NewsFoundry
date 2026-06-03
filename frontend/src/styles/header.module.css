@@ -1,0 +1,96 @@
+/* =========================
+   HEADER 1
+========================= */
+.header{
+	height: 88px;
+	max-width: 100%;
+	display: flex;
+	align-items: center;
+	background-color: var(--color100);
+}
+.logoHeader{
+	width: 100%;
+	max-width: 322px;
+	height: 88px;
+	display: flex;
+	align-items: center;
+	/* flex: 1; */
+	border-bottom: 1px solid var(--color400);
+
+}
+.logo{
+	padding-left: 20px;
+}
+.bar{
+	padding-left: 20px;
+	height: 88px;
+	flex: 1;
+	/* flex: auto; */
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border-left: 1px solid var(--color400);
+	border-bottom: 1px solid var(--color400);
+}
+.icon{
+	padding-right: 10px;
+}
+.btn{
+	all:unset;
+	height:36px;
+	border-radius: 8px;
+	padding : 0px 10px;
+	background-color: var(--header);
+	color: var(--color100);
+	font-weight: 700;
+}
+
+/* =========================
+   HEADER 2
+========================= */
+.barDiscussion{
+	padding-left: 20px;
+	height: 88px;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	border-left: 1px solid var(--color400);
+	border-bottom: 1px solid var(--color400);
+}
+.discussion{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+}
+.iconDiscussion{
+	font-size: 18px;
+}
+.text{
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	gap: 10px;
+}
+.textDiscussion{
+	font-size: var(--headings);
+}
+.textConversation{
+	font-size: var(--bodyxs);
+	color: var(--color600);
+}
+.btnDiscussion{
+	all:unset;
+	height:61px;
+	border-radius: 8px;
+	padding : 4px 8px;
+	margin-right: 1.5rem;
+	background-color: var(--header);
+	color: var(--color100);
+}
+
+.iconGenerate{
+	padding-right: 10px;
+}
