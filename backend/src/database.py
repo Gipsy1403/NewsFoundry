@@ -4,6 +4,7 @@ from sqlmodel import SQLModel, Session, create_engine, select
 import bcrypt
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+print(os.getenv("DATABASE_URL"))
 engine = create_engine(DATABASE_URL, echo=True)
 
 
