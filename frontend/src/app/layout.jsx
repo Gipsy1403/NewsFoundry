@@ -28,16 +28,7 @@ export default function RootLayout({ children }) {
   return (
     <html  lang="fr" >
 		<body suppressHydrationWarning className={`${inter.variable} ${ibmPlexSans.variable}`}>
-			<div className={styles.container}>
-				<HeaderDynamic />
-				<div className={styles.content}>
-					<SideBar />
-					<main className={styles.main}>
-						{children}
-					</main>
-				</div>
-				<Footer />
-			</div>
+			{children}
 		</body>
     </html>
   );

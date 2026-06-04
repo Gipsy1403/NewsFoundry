@@ -24,7 +24,7 @@
 }
 .inputBar {
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: center;
   align-items: center;
   /* padding: 17px 71px; */
   height: 93px;

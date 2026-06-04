@@ -1,0 +1,72 @@
+/* =========================
+   Press Review
+========================= */
+.containerPress{
+	padding: 2rem 3rem;
+}
+.title{
+	font-weight: 500;
+	font-size: var(--bodyl);
+	margin-bottom: 0.8rem;
+}
+.subTitle{
+	color: var(--color800);
+	margin-bottom: 0.8rem;
+
+}
+.card{
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	max-width: 926px;
+	width: 100%;
+	background-color: var(--white);
+	border-radius: 14px;
+	border: 1px solid rgba(0,0,0,0.1);
+	padding: 2rem;
+}
+.headerCard{
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 2rem;
+}
+.titleCard{
+	font-size: var(--headingxs);
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
+}
+.dateCard{
+	font-size: var(--bodyxs);
+	color: var(--color800);
+}
+.iconCard{
+	margin-right: 8px;
+}
+.btnCard{
+	color: var(--white);
+	background-color: var(--dark);
+	padding: 3px 10px;
+	border-radius: 4px;
+	font-size: var(--bodyxs);
+}
+.article{
+	display: flex;
+	flex-direction: column;
+	padding: 2rem;
+	gap: 0.8rem;
+	font-size: var(--bodyxs);
+}
+.titleArticle{
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	gap: 10px;
+
+}
+.titlePress{
+	text-transform: uppercase;
+
+}
+
+
+
