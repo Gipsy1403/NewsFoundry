@@ -10,26 +10,22 @@ import os
 load_dotenv()
 
 
-SECRET_KEY = os.getenv("SECRET_KEY", "test-secret")
-ALGORITHM = os.getenv("ALGORITHM", "HS256")
+# Récupération des variables d'environnement
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
+# os.getenv retourne une chaîne de caractères,
+# on convertit donc la durée en entier
 ACCESS_TOKEN_EXPIRE_MINUTES = int(
-    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
+    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 )
 
-print("SECRET_KEY =", SECRET_KEY)
-print("ALGORITHM =", ALGORITHM)
-print("ACCESS_TOKEN_EXPIRE_MINUTES =", ACCESS_TOKEN_EXPIRE_MINUTES)
-# # Récupération des variables d'environnement
-# SECRET_KEY = os.getenv("SECRET_KEY")
-# ALGORITHM = os.getenv("ALGORITHM")
-
-# # os.getenv retourne une chaîne de caractères,
-# # on convertit donc la durée en entier
-# ACCESS_TOKEN_EXPIRE_MINUTES = int(
-#     os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
-# )
-
+print("SECRET_KEY =", os.getenv("SECRET_KEY"))
+print("ALGORITHM =", os.getenv("ALGORITHM"))
+print(
+    "ACCESS_TOKEN_EXPIRE_MINUTES =",
+    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+)
 
 def create_access_token(data: dict):
     """
