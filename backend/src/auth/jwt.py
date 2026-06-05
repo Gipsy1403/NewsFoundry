@@ -3,11 +3,11 @@ from datetime import datetime, timedelta, timezone
 
 # Import de la bibliothèque permettant de créer des JWT
 from jose import jwt
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 
 # Charge les variables du fichier .env
-load_dotenv()
+# load_dotenv()
 
 
 # Récupération des variables d'environnement
