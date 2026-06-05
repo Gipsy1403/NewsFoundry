@@ -8,6 +8,7 @@ import styles from "./layout.module.css"
 config.autoAddCss = false;
 import "./globals.css";
 import HeaderDynamic from "./components/Headers/HeaderDynamic";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html  lang="fr" >
 		<body suppressHydrationWarning className={`${inter.variable} ${ibmPlexSans.variable}`}>
+			<Toaster position="top-center" toastOptions={{duration:3000}}/>
 			{children}
 		</body>
     </html>

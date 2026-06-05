@@ -31,16 +31,12 @@ def login(data: LoginRequest):
             select(User).where(User.email == data.email)
         ).first()
 
-        # 2. Vérifier existence
-        if not user:
-            raise HTTPException(status_code=401, detail="Utilisateur introuvable")
-
-        # 3. Vérifier mot de passe
-        print("HASH DB =", user.hashed_password)
-        print("TYPE =", type(user.hashed_password))
-        
-        if not pwd_context.verify(data.password, user.hashed_password):
-            raise HTTPException(status_code=401, detail="Mot de passe incorrect")
+        # 2. Vérification unique (sécurité)
+        if not user or not pwd_context.verify(data.password, user.hashed_password):
+            raise HTTPException(
+                status_code=401,
+                detail="Identifiants invalides"
+            )
 
         # 4. Créer token JWT
         token = create_access_token(

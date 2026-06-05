@@ -5,6 +5,7 @@ import styles from "../../../styles/login.module.css"
 import { useState } from "react";
 import { login } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Home() {
 	const[email, setEmail]=useState("");
@@ -14,21 +15,15 @@ export default function Home() {
 	async function handleLogin(e) {
 		e.preventDefault();
 		try {
-console.log("EMAIL:", email);
-console.log("PASSWORD:", password);
-console.log("CALL LOGIN");
 			// Appel API
 			const data = await login(email,password);
-console.log("RESPONSE", data)
 			// Stockage JWT
 			localStorage.setItem("token", data.access_token);
-
 			router.push("/home")
-
-			alert("Connexion réussie !");
+			toast.success("Connexion réussie !");
 		} catch (err) {
- console.error("LOGIN ERROR:", err);
-			alert("Erreur de connexion");
+			const message = err?.message || "Erreur de connexion";
+			toast.error(message);
 		}
 	}
 

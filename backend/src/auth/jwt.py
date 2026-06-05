@@ -20,13 +20,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(
     os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 )
 
-print("SECRET_KEY =", os.getenv("SECRET_KEY"))
-print("ALGORITHM =", os.getenv("ALGORITHM"))
-print(
-    "ACCESS_TOKEN_EXPIRE_MINUTES =",
-    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
-)
-
 def create_access_token(data: dict):
     """
     Crée un token JWT à partir des données reçues.
