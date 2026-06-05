@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from src.database import engine
 from src.models import User
 from src.auth.jwt import create_access_token
+from src.auth.dependencies import get_current_user_id
 from passlib.context import CryptContext
 
 router = APIRouter()
@@ -17,6 +18,13 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
+@router.get("/me")
+def me(
+    user_id: int = Depends(get_current_user_id)
+):
+    return {
+        "user_id": user_id
+    }
 
 @router.post("/login")
 def login(data: LoginRequest):
