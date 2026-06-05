@@ -9,6 +9,13 @@ import os
 # Charge les variables du fichier .env
 load_dotenv()
 
+
+print("SECRET_KEY =", os.getenv("SECRET_KEY"))
+print("ALGORITHM =", os.getenv("ALGORITHM"))
+print(
+    "ACCESS_TOKEN_EXPIRE_MINUTES =",
+    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+)
 # Récupération des variables d'environnement
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
