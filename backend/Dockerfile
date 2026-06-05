@@ -11,4 +11,5 @@ COPY src/ ./src/
 
 EXPOSE 8000
 
-CMD ["uv", "run", "python", "src/main.py"]
+# CMD ["uv", "run", "python", "src/main.py"]
+CMD ["uv", "run", "python", "-m","src.main.py"]
