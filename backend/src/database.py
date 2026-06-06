@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, Session, create_engine, select
 # import bcrypt
 from passlib.context import CryptContext
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL","sqlite:///test.db")
 print(os.getenv("DATABASE_URL"))
 engine = create_engine(DATABASE_URL, echo=True)
 print("DATABASE_URL =", engine.url)
@@ -34,3 +34,8 @@ def init_db():
                 )
             )
             session.commit()
+            
+
+def get_session():
+    with Session(engine) as session:
+        yield session
