@@ -31,6 +31,6 @@ jobs:
       # 4. Lancer les tests
       - name: Run tests
         env:
-          PYTHONPATH: .
+          PYTHONPATH: backend
         run: |
-          pytest -v
+          pytest -v backend/tests
