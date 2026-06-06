@@ -11,13 +11,14 @@ import os
 
 
 # Récupération des variables d'environnement
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
+SECRET_KEY = os.getenv("SECRET_KEY","test-secret-key")
+ALGORITHM = os.getenv("ALGORITHM","HS256")
 
 # os.getenv retourne une chaîne de caractères,
 # on convertit donc la durée en entier
 ACCESS_TOKEN_EXPIRE_MINUTES = int(
-    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES","60")
+)
 )
 
 def create_access_token(data: dict):
