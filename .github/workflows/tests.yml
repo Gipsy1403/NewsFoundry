@@ -30,7 +30,14 @@ jobs:
 
       # 4. Lancer les tests
       - name: Run tests
+	 
         env:
           PYTHONPATH: backend
+          DATABASE_URL: sqlite:///test.db
+          SECRET_KEY: test-secret-key
+          ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 60
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+
         run: |
           pytest -v backend/tests
