@@ -7,6 +7,14 @@ from src.main import app
 from src.database import get_session
 from src.auth.dependencies import get_current_user_id
 
+from src.models import User
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
+
 
 # =========================
 # 1. DB TEST (SQLite mémoire)
@@ -37,8 +45,21 @@ def override_get_user_id():
 # =========================
 @pytest.fixture(scope="session", autouse=True)
 def setup_db():
+
     SQLModel.metadata.create_all(engine)
+
+    with Session(engine) as session:
+
+        user = User(
+            email="test@test.com",
+            hashed_password=pwd_context.hash("test")
+        )
+
+        session.add(user)
+        session.commit()
+
     yield
+
     SQLModel.metadata.drop_all(engine)
 
 
