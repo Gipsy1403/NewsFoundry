@@ -17,6 +17,6 @@ class Chat(SQLModel, table=True):
 
     # historique complet du chat
     messages: List[Dict[str, Any]] = Field(
-        sa_column=Column(JSON),
+        sa_column=Column(JSON, nullable=False),
         default_factory=list
     )

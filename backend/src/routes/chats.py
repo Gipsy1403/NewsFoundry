@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from src.database import engine
 from src.models import Chat
 from src.auth.dependencies import get_current_user_id
+from src.ai.agent import agent
+from src.ai.history import build_history
 
 router = APIRouter()
 
@@ -97,20 +99,55 @@ def send_message(
             "role": "user",
             "content": message.content
         }
+        chat.messages = chat.messages + [user_message]
+     #    chat.messages.append(user_message)
 
-        chat.messages.append(user_message)
+        # 4. construire historique (sans le dernier message)
+        print("\n===== MESSAGES BRUTS =====")
+        for m in chat.messages:
+            print(m)
+            
+        history_text = build_history(chat.messages)
+        print("HISTORIQUE ENVOYÉ AU LLM :")
+        print(history_text)
+        
 
-        # 4. réponse LLM (placeholder pour l’instant)
-        assistant_response = f"Réponse simulée à : {message.content}"
+        # 5. prompt complet envoyé au modèle
+        full_prompt = f"""
+             Historique de la conversation :
+                {history_text}
 
+             Nouveau message utilisateur :
+                {message.content}
+        """
+        
+        print("\n===== PROMPT FINAL =====")
+        print(full_prompt)
+        
+        # 6. appel LLM
+        result = agent.run_sync(full_prompt)
+
+     #    result = agent.run_sync(
+     #         message.content
+     #    )
+
+        assistant_response = result.output
+
+        # 7. ajout réponse assistant dans le chat
+        print("\n===== RÉPONSE LLM =====")
+        print(assistant_response)
         assistant_message = {
             "role": "assistant",
             "content": assistant_response
         }
 
-        chat.messages.append(assistant_message)
-
-        # 5. sauvegarde
+     #    chat.messages.append(assistant_message)
+        chat.messages = chat.messages + [assistant_message]
+        print("\n===== CHAT FINAL STOCKÉ =====")
+        for m in chat.messages:
+            print(m)
+            
+        # 8. sauvegarde
         session.add(chat)
         session.commit()
         session.refresh(chat)

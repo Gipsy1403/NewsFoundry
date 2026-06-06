@@ -12,4 +12,5 @@ dependencies = [
     "bcrypt>=4.3.0",
     "python-jose>=3.5.0",
     "passlib[bcrypt]>=1.7.4",
+    "pydantic-ai>=1.106.0",
 ]
