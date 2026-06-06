@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
-from src.database import engine
+from src.database import engine, get_session
 from src.models import User
 from src.auth.jwt import create_access_token
 from src.auth.dependencies import get_current_user_id
@@ -27,12 +27,12 @@ def me(
     }
 
 @router.post("/login")
-def login(data: LoginRequest):
+def login(data: LoginRequest, session: Session = Depends(get_session)):
     """
     Authentifie un utilisateur et retourne un JWT
     """
 
-    with Session(engine) as session:
+#     with Session(engine) as session:
 
         # 1. Chercher utilisateur en base
         user = session.exec(

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from pydantic import BaseModel
-from src.database import engine
+from src.database import engine, get_session
 from src.models import Chat
 from src.auth.dependencies import get_current_user_id
 from src.ai.agent import agent
@@ -12,9 +12,10 @@ router = APIRouter()
 # Récupère tous les chats de l'utilisateur connecté
 @router.get("/chats")
 def get_chats(
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id),
+    session: Session = Depends(get_session)
 ):
-    with Session(engine) as session:
+#     with Session(engine) as session:
 
         chats = session.exec(
             select(Chat).where(
@@ -28,9 +29,10 @@ def get_chats(
 @router.get("/chats/{chat_id}")
 def get_chat(
     chat_id: int,
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id),
+    session: Session = Depends(get_session)
 ):
-    with Session(engine) as session:
+#     with Session(engine) as session:
 
         chat = session.get(Chat, chat_id)
 
@@ -53,9 +55,10 @@ def get_chat(
 @router.post("/chats")
 def create_chat(
 #   Vérifie que l'utilisateur est authentifié avant de créer un chat
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id),
+    session: Session = Depends(get_session)
 ):
-    with Session(engine) as session:
+#     with Session(engine) as session:
       # Création du chat si l'utilisateur est authentifié
         chat = Chat(
             user_id=user_id,
@@ -80,9 +83,10 @@ class MessageRequest(BaseModel):
 def send_message(
     chat_id: int,
     message: MessageRequest,
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id),
+    session: Session = Depends(get_session)
 ):
-    with Session(engine) as session:
+#     with Session(engine) as session:
 
         # 1. récupérer chat
         chat = session.get(Chat, chat_id)

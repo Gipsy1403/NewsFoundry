@@ -11,6 +11,11 @@ print("DATABASE_URL =", engine.url)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+def get_session():
+    with Session(engine) as session:
+        yield session
+        
+
 def init_db():
     SQLModel.metadata.create_all(engine)
     print("Database initialized successfully")
@@ -36,6 +41,4 @@ def init_db():
             session.commit()
             
 
-def get_session():
-    with Session(engine) as session:
-        yield session
+
