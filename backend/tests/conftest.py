@@ -72,7 +72,8 @@
 #         yield c
 
 import pytest
-
+from pydantic_ai.models.test import TestModel
+from src.ai.agent import agent
 from fastapi.testclient import TestClient
 
 from sqlmodel import (
@@ -95,7 +96,15 @@ pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto"
 )
+@pytest.fixture(autouse=True)
+def test_model():
+    original_model = agent.model
 
+    agent.model = TestModel()
+
+    yield
+
+    agent.model = original_model
 
 # ==========================
 # Base SQLite mémoire
@@ -125,15 +134,15 @@ def override_get_user_id():
 # Mock PydanticAI
 # ==========================
 
-class FakeResult:
-    def __init__(self, output):
-        self.output = output
+# class FakeResult:
+#     def __init__(self, output):
+#         self.output = output
 
 
-def fake_run_sync(prompt):
-    return FakeResult(
-        "Réponse IA simulée"
-    )
+# def fake_run_sync(prompt):
+#     return FakeResult(
+#         "Réponse IA simulée"
+#     )
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -159,15 +168,15 @@ def setup_db():
 
 
 @pytest.fixture(autouse=True)
-def mock_llm(monkeypatch):
+# def mock_llm(monkeypatch):
 
-    from src.ai.agent import agent
+#     from src.ai.agent import agent
 
-    monkeypatch.setattr(
-        agent,
-        "run_sync",
-        fake_run_sync
-    )
+#     monkeypatch.setattr(
+#         agent,
+#         "run_sync",
+#         fake_run_sync
+#     )
 
 
 @pytest.fixture
@@ -185,3 +194,4 @@ def client():
         yield c
 
     app.dependency_overrides.clear()
+

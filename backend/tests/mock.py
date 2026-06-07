@@ -2,6 +2,7 @@ import pytest
 from src.ai import agent
 from src.auth.dependencies import get_current_user_id
 from src.main import app
+from pydantic_ai.models.test import TestModel
 
 
 # =========================
@@ -24,20 +25,38 @@ def mock_llm(monkeypatch):
 # =========================
 # TEST CHAT MESSAGE
 # =========================
+# def test_send_message(client):
+#     chat = client.post("/chats").json()
+#     chat_id = chat["chat_id"]
+
+#     response = client.post(
+#         f"/chats/{chat_id}/messages",
+#         json={"content": "Bonjour"}
+#     )
+
+#     assert response.status_code == 200
+
+#     data = response.json()
+#     assert data["response"] == "Réponse IA simulée"
+#     print(data)
 def test_send_message(client):
-    chat = client.post("/chats").json()
-    chat_id = chat["chat_id"]
 
-    response = client.post(
-        f"/chats/{chat_id}/messages",
-        json={"content": "Bonjour"}
-    )
+    with agent.override(
+        model=TestModel()
+    ):
 
-    assert response.status_code == 200
+        chat = client.post("/chats").json()
 
-    data = response.json()
-    assert data["response"] == "Réponse IA simulée"
+        chat_id = chat["chat_id"]
 
+        response = client.post(
+            f"/chats/{chat_id}/messages",
+            json={
+                "content": "Bonjour"
+            }
+        )
+
+        assert response.status_code == 200
 
 # =========================
 # TEST HISTORIQUE
