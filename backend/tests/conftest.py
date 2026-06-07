@@ -167,7 +167,7 @@ def setup_db():
     SQLModel.metadata.drop_all(engine)
 
 
-@pytest.fixture(autouse=True)
+# @pytest.fixture(autouse=True)
 # def mock_llm(monkeypatch):
 
 #     from src.ai.agent import agent
