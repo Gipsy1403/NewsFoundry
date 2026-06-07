@@ -71,6 +71,9 @@
 #     with TestClient(app) as c:
 #         yield c
 
+import os
+
+os.environ["MISTRAL_API_KEY"] = "test-key"
 import pytest
 from pydantic_ai.models.test import TestModel
 from src.ai.agent import agent
@@ -90,6 +93,8 @@ from src.main import app
 from src.models import User
 from src.database import get_session
 from src.auth.dependencies import get_current_user_id
+
+
 
 
 pwd_context = CryptContext(
