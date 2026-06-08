@@ -6,7 +6,7 @@ export default function Home() {
 		<>
 			<div className={styles.main}>
 				<div className={styles.content}>
-														<Image
+					<Image
 						className={styles.robot}
 						src="/IMGAppli/animationRobot.png"
 						alt="Robot IA animé"

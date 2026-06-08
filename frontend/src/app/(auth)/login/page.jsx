@@ -3,7 +3,7 @@
 import Image from "next/image"
 import styles from "../../../styles/login.module.css"
 import { useState } from "react";
-import { login } from "@/lib/api";
+import { login } from "@/lib/api/authService";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

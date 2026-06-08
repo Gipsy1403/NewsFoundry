@@ -1,3 +1,6 @@
+import { setToken } from "./auth";
+
+// Service d'authentification
 export async function login(email, password) {
   // Appel backend login
 console.log("API URL =", process.env.NEXT_PUBLIC_API_URL);
@@ -14,6 +17,7 @@ console.log("API URL =", process.env.NEXT_PUBLIC_API_URL);
     throw new Error("Erreur de connexion");
   }
 
-  // Récupération des données (souvent token)
-  return res.json();
+  const data= await res.json();
+  setToken(data.access_token);
+  return data;
 }

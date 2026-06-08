@@ -1,0 +1,75 @@
+.container {
+	height: 100%;
+	padding: 20px;
+}
+
+.messages {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+/* Ligne complète */
+
+.messageRowAssistant {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	width: 100%;
+}
+
+.messageRowUser {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
+	gap: 12px;
+	width: 100%;
+}
+
+/* Avatar */
+
+.avatar {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+.user{
+	font-size: var(--bodys);
+	color: var(--white);
+	background-color: var(--dark);
+}
+.assistant{
+	background-color: var(--color300);
+}
+.image{
+	width: 16px;
+	height: 16px;
+}
+
+/* Bulles */
+.assistantMessage, .userMessage {
+	max-width: 70%;
+	padding: 16px;
+	border-radius: 10px;
+}
+.assistantMessage{
+	background-color: var(--color300);
+}
+.userMessage {
+	background-color: var(--dark);
+	color: var(--white);
+}
+.assistantMessage p, .userMessage p{
+	font-size: var(--bodyxs);
+	margin-top: 1rem;
+}
+.assistantMessage p{
+	color : var(--color800);
+}
+.userMessage p{
+	color : var(--color300);
+}

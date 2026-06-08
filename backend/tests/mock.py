@@ -25,20 +25,6 @@ def mock_llm(monkeypatch):
 # =========================
 # TEST CHAT MESSAGE
 # =========================
-# def test_send_message(client):
-#     chat = client.post("/chats").json()
-#     chat_id = chat["chat_id"]
-
-#     response = client.post(
-#         f"/chats/{chat_id}/messages",
-#         json={"content": "Bonjour"}
-#     )
-
-#     assert response.status_code == 200
-
-#     data = response.json()
-#     assert data["response"] == "Réponse IA simulée"
-#     print(data)
 def test_send_message(client):
 
     with agent.override(

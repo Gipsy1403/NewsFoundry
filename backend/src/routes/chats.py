@@ -111,7 +111,7 @@ def send_message(
         for m in chat.messages:
             print(m)
             
-        history_text = build_history(chat.messages)
+        history_text = build_history(chat.messages[:-1])
         print("HISTORIQUE ENVOYÉ AU LLM :")
         print(history_text)
         

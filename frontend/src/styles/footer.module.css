@@ -16,7 +16,7 @@
   gap: 10px;
   cursor: pointer;
   background-color: var(--color100);
-  /* height: 127px; */
+  height: 127px;
 
 }
 .btnLogout{
