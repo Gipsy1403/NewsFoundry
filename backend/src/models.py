@@ -20,3 +20,7 @@ class Chat(SQLModel, table=True):
         sa_column=Column(JSON, nullable=False),
         default_factory=list
     )
+
+    # Stockage du system prompt utilisé à la création du chat
+    # Optional[str] car les anciens chats n'en auront pas (rétrocompatibilité)
+    system_prompt: Optional[str] = Field(default=None)

@@ -6,6 +6,7 @@ from src.models import Chat
 from src.auth.dependencies import get_current_user_id
 from src.ai.agent import agent
 from src.ai.history import build_history
+from src.ai.news import build_news_system_prompt
 
 router = APIRouter()
 
@@ -107,26 +108,39 @@ def send_message(
      #    chat.messages.append(user_message)
 
         # 4. construire historique (sans le dernier message)
-        print("\n===== MESSAGES BRUTS =====")
-        for m in chat.messages:
-            print(m)
-            
         history_text = build_history(chat.messages[:-1])
-        print("HISTORIQUE ENVOYÉ AU LLM :")
-        print(history_text)
-        
 
         # 5. prompt complet envoyé au modèle
-        full_prompt = f"""
-             Historique de la conversation :
-                {history_text}
+     #    full_prompt = f"""
+     #         Historique de la conversation :
+     #            {history_text}
 
-             Nouveau message utilisateur :
-                {message.content}
-        """
-        
-        print("\n===== PROMPT FINAL =====")
-        print(full_prompt)
+     #         Nouveau message utilisateur :
+     #            {message.content}
+     #    """
+        # ETAPE 5 : on préfixe le prompt avec le system_prompt sauvegardé en BDD
+        # ✅ C'est la façon fiable d'injecter le contexte dans pydantic-ai
+        # car run_sync() ne supporte pas de paramètre system_prompt à la volée
+        # Les anciens chats sans system_prompt fonctionnent normalement (fallback sur le prompt de l'agent)
+        if chat.system_prompt:
+            full_prompt = f"""[Instructions système]
+			{chat.system_prompt}
+
+			[Historique de la conversation]
+			{history_text}
+
+			[Nouveau message utilisateur]
+			{message.content}
+            """
+            
+        else:
+        # Fallback pour les chats créés avant cette mise à jour
+            full_prompt = f"""Historique de la conversation :
+			{history_text}
+
+			Nouveau message utilisateur :
+			{message.content}
+            """
         
         # 6. appel LLM
         result = agent.run_sync(full_prompt)
@@ -137,9 +151,7 @@ def send_message(
 
         assistant_response = result.output
 
-        # 7. ajout réponse assistant dans le chat
-        print("\n===== RÉPONSE LLM =====")
-        print(assistant_response)
+        # 7. Sauvegarde de la réponse de l'assistant dans l'historique du chat
         assistant_message = {
             "role": "assistant",
             "content": assistant_response
@@ -147,9 +159,6 @@ def send_message(
 
      #    chat.messages.append(assistant_message)
         chat.messages = chat.messages + [assistant_message]
-        print("\n===== CHAT FINAL STOCKÉ =====")
-        for m in chat.messages:
-            print(m)
             
         # 8. sauvegarde
         session.add(chat)
