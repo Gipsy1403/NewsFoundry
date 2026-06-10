@@ -3,11 +3,7 @@ import { getToken } from "./auth";
 // Requêtes API avec gestion du token d'authentification
 export async function apiFetch(endpoint, options = {}) {
   const token = getToken();
-  console.log("Token :", token);
-console.log(
-  "API URL :",
-  `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`
-);
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
     {

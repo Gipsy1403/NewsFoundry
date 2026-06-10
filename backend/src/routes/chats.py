@@ -6,7 +6,8 @@ from src.models import Chat
 from src.auth.dependencies import get_current_user_id
 from src.ai.agent import agent
 from src.ai.history import build_history
-from src.ai.news import build_news_system_prompt
+from src.ai.news import (build_news_system_prompt, build_news_context)
+from datetime import datetime
 
 router = APIRouter()
 
@@ -59,25 +60,37 @@ def create_chat(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session)
 ):
-#     with Session(engine) as session:
+
+    # 1. construire system prompt + news du jour
+    system_prompt = f"""
+      {build_news_system_prompt()}
+
+      [ACTUALITÉS DU JOUR]
+
+      {build_news_context()}
+     """
       # Création du chat si l'utilisateur est authentifié
-        chat = Chat(
+    chat = Chat(
             user_id=user_id,
-            messages=[]
+            messages=[],
+            system_prompt=system_prompt,
         )
 
-        session.add(chat)
-        session.commit()
+    session.add(chat)
+    session.commit()
      #    Recharge le chat pour avoir la bonne valeur de l'id généré par la base de données
-        session.refresh(chat)
+    session.refresh(chat)
 
-        return {
-            "chat_id": chat.id
+    return {
+        "id": chat.id,
+        "user_id": chat.user_id,
+        "messages": chat.messages,
+        "system_prompt": chat.system_prompt,
+        "created_at": chat.created_at.isoformat()  # important pour React
         }
     
 class MessageRequest(BaseModel):
     content: str
-
 
 # Envoi un message dans un chat spécifique de l'utilisateur connecté
 @router.post("/chats/{chat_id}/messages")
@@ -87,8 +100,6 @@ def send_message(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session)
 ):
-#     with Session(engine) as session:
-
         # 1. récupérer chat
         chat = session.get(Chat, chat_id)
 
@@ -99,62 +110,42 @@ def send_message(
         if chat.user_id != user_id:
             raise HTTPException(status_code=403, detail="Accès interdit")
 
-        # 3. ajouter message utilisateur
+        # 3. construire historique (sans le dernier message)
+        history_text = build_history(chat.messages)
+        
+        # 4. ajouter message utilisateur
         user_message = {
             "role": "user",
             "content": message.content
         }
         chat.messages = chat.messages + [user_message]
-     #    chat.messages.append(user_message)
 
-        # 4. construire historique (sans le dernier message)
-        history_text = build_history(chat.messages[:-1])
-
-        # 5. prompt complet envoyé au modèle
-     #    full_prompt = f"""
-     #         Historique de la conversation :
-     #            {history_text}
-
-     #         Nouveau message utilisateur :
-     #            {message.content}
-     #    """
         # ETAPE 5 : on préfixe le prompt avec le system_prompt sauvegardé en BDD
         # ✅ C'est la façon fiable d'injecter le contexte dans pydantic-ai
         # car run_sync() ne supporte pas de paramètre system_prompt à la volée
         # Les anciens chats sans system_prompt fonctionnent normalement (fallback sur le prompt de l'agent)
-        if chat.system_prompt:
-            full_prompt = f"""[Instructions système]
-			{chat.system_prompt}
+        
+        system_prompt = (chat.system_prompt or build_news_system_prompt())
+        
+        full_prompt = f"""
+			{system_prompt}
 
-			[Historique de la conversation]
+			[Historique]
 			{history_text}
 
 			[Nouveau message utilisateur]
 			{message.content}
-            """
-            
-        else:
-        # Fallback pour les chats créés avant cette mise à jour
-            full_prompt = f"""Historique de la conversation :
-			{history_text}
+	    """
 
-			Nouveau message utilisateur :
-			{message.content}
-            """
-        
         # 6. appel LLM
         result = agent.run_sync(full_prompt)
 
-     #    result = agent.run_sync(
-     #         message.content
-     #    )
-
-        assistant_response = result.output
+     #    assistant_response = result.output
 
         # 7. Sauvegarde de la réponse de l'assistant dans l'historique du chat
         assistant_message = {
             "role": "assistant",
-            "content": assistant_response
+            "content": result.output
         }
 
      #    chat.messages.append(assistant_message)
@@ -166,6 +157,6 @@ def send_message(
         session.refresh(chat)
 
         return {
-            "response": assistant_response,
+            "response": result.output,
             "chat": chat.messages
         }

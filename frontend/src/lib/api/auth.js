@@ -1,13 +1,20 @@
 // Gestion du token d'authentification dans le localStorage
 
 export function setToken(token) {
-  localStorage.setItem("token", token);
+  if (typeof window !== "undefined") {
+    localStorage.setItem("token", token);
+  }
 }
 
 export function getToken() {
-  return localStorage.getItem("token");
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("token");
+  }
+  return null;
 }
 
 export function logout() {
-  localStorage.removeItem("token");
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("token");
+  }
 }

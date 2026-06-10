@@ -2,6 +2,7 @@ from typing import Optional, List, Dict, Any
 from sqlmodel import SQLModel, Field
 from sqlalchemy import Column
 from sqlalchemy.types import JSON
+from datetime import datetime, timezone
 
 
 class User(SQLModel, table=True):
@@ -24,3 +25,8 @@ class Chat(SQLModel, table=True):
     # Stockage du system prompt utilisé à la création du chat
     # Optional[str] car les anciens chats n'en auront pas (rétrocompatibilité)
     system_prompt: Optional[str] = Field(default=None)
+
+#     Date de création du chat
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )

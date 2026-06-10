@@ -15,6 +15,10 @@ export function createChat() {
 }
 
 export function sendMessage(chatId, content) {
+	  console.log("sendMessage chatId =", chatId)
+	if (!chatId) {
+         throw new Error("chatId manquant dans sendMessage")
+     }
   return apiFetch(`/chats/${chatId}/messages`, {
     method: "POST",
     body: JSON.stringify({ content }),

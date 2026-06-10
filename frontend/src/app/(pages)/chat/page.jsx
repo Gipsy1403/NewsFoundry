@@ -6,6 +6,8 @@ import * as Avatar from "@radix-ui/react-avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useChat } from "@/context/ChatContext";
+import ReactMarkdown from "react-markdown";
+
 
 export default function Chat() {
 	const { messages, loading } = useChat();
@@ -40,7 +42,7 @@ export default function Chat() {
 							</Avatar.Root>
 
 							<div className={styles.assistantMessage}>
-								{message.content}
+								<ReactMarkdown>{message.content}</ReactMarkdown>
 								<p>{message.time}</p>
 							</div>
 						</div>

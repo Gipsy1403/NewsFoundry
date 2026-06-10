@@ -9,7 +9,14 @@
 	flex-direction: column;
 	padding: 21px 24px;
 	background-color: var(--color100);
+
+	overflow: hidden;
 	
+}
+.chatListContainer {
+	flex: 1;              /* prend l’espace restant */
+	overflow-y: auto;     /* scroll vertical */
+	padding-right: 6px;   /* évite que le texte touche la scrollbar */
 }
 
 /* LISTE DES CHATS */
@@ -18,7 +25,10 @@
 	flex-direction: column;
 	gap: 2px;
 }
-
+.dateChatList{
+	font-size: var(--body2xs);
+	color: var(--color800);
+}
 /* ITEM CHAT (réutilisable) */
 .chatItem {
 	display: flex;
