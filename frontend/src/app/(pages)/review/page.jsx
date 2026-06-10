@@ -2,7 +2,7 @@ import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../../styles/pressreview.module.css"
 
-export default function PressReview() {
+export default function ReviewPress() {
 	return (
 		<article className={styles.containerPress} >
 			<p className={styles.title}>Revues de Presse</p>

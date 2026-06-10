@@ -1,9 +1,15 @@
 import Image from "next/image";
 import { faComment, faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "../../../styles/header.module.css"
+import styles from "../../../styles/header.module.css";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Header1() {
+	const pathname=usePathname();
+	const isChat=pathname==="/home";
+	const isReviewPress=pathname==="/review"
+
 	return (
 		<header className={styles.header}>
 			<div className={styles.logoHeader}>
@@ -15,14 +21,18 @@ export default function Header1() {
 					height={15} />
 			</div>
 			<div className={styles.bar}>
-				<button className={styles.btn}>
-					<FontAwesomeIcon className={styles.icon} icon={faComment} />
-					Chat
-				</button>
-				<button className={styles.btn}>
-					<FontAwesomeIcon className={styles.icon} icon={faFileLines} />
-					Revue de presse
-				</button>
+				<Link href="/home">
+					<button className={`${styles.btn} ${isChat ? styles.active : styles.disabled}`}>
+						<FontAwesomeIcon className={styles.icon} icon={faComment} />
+						Chat
+					</button>
+				</Link>
+				<Link href="/review">
+					<button className={`${styles.btn} ${isReviewPress ? styles.active : styles.disabled}`}>
+						<FontAwesomeIcon className={styles.icon} icon={faFileLines} />
+						Revue de presse
+					</button>
+				</Link>
 			</div>
 		</header>
 	)

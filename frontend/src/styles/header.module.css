@@ -40,9 +40,16 @@
 	height:36px;
 	border-radius: 8px;
 	padding : 0px 10px;
+
+}
+.active {
 	background-color: var(--header);
 	color: var(--color100);
 	font-weight: 700;
+}
+
+.disabled {
+	background-color: var(--color200);
 }
 
 /* =========================
@@ -76,6 +83,14 @@
 }
 .textDiscussion{
 	font-size: var(--headings);
+	all: unset;
+	cursor: pointer;
+}
+.textDiscussion:hover{
+	background-color: var(--header);
+	color: var(--white);
+	padding: 3px;
+	border-radius: 12px;
 }
 .textConversation{
 	font-size: var(--bodyxs);

@@ -7,10 +7,14 @@ import styles from "../../../styles/header.module.css"
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
 import Modal from "../Modal";
+import Link from "next/link";
+import { useChat } from "@/context/ChatContext";
 
 
 export default function Header2() {
 	const[openModal,setOpenModal]=useState(false)
+	const {startNewChat}= useChat();
+
 	return (
 		<>
 			<header className={styles.header}>
@@ -24,9 +28,11 @@ export default function Header2() {
 				</div>
 				<div className={styles.barDiscussion}>
 					<div className={styles.discussion}>
-						<FontAwesomeIcon className={styles.iconDiscussion} icon={faArrowLeftLong} />
+						<Link href="/home">
+							<FontAwesomeIcon className={styles.iconDiscussion} icon={faArrowLeftLong} />
+						</Link>
 						<div className={styles.text}>
-							<p className={styles.textDiscussion}>Nouvelle discussion</p>
+							<button className={styles.textDiscussion} onClick={startNewChat}>Nouvelle discussion</button>
 							<p className={styles.textConversation}>Conversation active</p>
 						</div>
 					</div>
