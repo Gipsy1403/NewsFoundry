@@ -1,3 +1,5 @@
+// Centralise tous les appels HTTP liés aux chats
+
 import { apiFetch } from "./apiFetch";
 
 export function getChats() {

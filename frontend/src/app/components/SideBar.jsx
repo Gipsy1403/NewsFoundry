@@ -16,14 +16,17 @@ export default function SideBar(){
 		router.push("/chat");
 	}
 
-	const sortChats = [...chats].sort(
-		(a, b) => new Date(b.created_at) - new Date(a.created_at)
+	const visibleChats = chats
+		.filter(chat => chat.messages?.length > 0)
+		.sort(
+		(a, b) =>
+			new Date(b.created_at) - new Date(a.created_at)
 	);
 
 	return(
 			<aside className={styles.sideBar}>
 				<div className={styles.chatListContainer}>
-					{sortChats.map((chat)=>(
+					{visibleChats.map((chat)=>(
 					<div key={chat.id} className={styles.chatList}>
 						<div onClick={()=>handleClick(chat.id)} className={styles.chatItem}>
 							<p>Discusion du</p>

@@ -12,6 +12,7 @@ import Loading from "@/app/components/loading";
 
 export default function Chat() {
 	const { messages, loading } = useChat();
+	console.log(messages);
 
 	return (
 		<div className={styles.container}>

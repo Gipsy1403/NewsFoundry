@@ -17,12 +17,12 @@ export default function Footer() {
 
 	async function handleSend() {
 		if (!message.trim()) return;
-
+		const content=message;
+		setMessage("");
 		sendMessage(message);
 		router.push("/chat")
 
 		// Réinitialisation de l'input
-		setMessage("");
 	}
 
 	function handleKeyDown(e) {

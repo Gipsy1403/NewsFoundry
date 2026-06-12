@@ -6,7 +6,7 @@ from src.models import Chat
 from src.auth.dependencies import get_current_user_id
 from src.ai.agent import agent
 from src.ai.history import build_history
-from src.ai.news import (build_news_system_prompt, build_news_context)
+from src.ai.news import (build_news_system_prompt, fetch_top_news, filter_articles)
 from datetime import datetime
 
 router = APIRouter()
@@ -54,6 +54,7 @@ def get_chat(
 
         return chat
 
+# Création d'un nouveau chat pour l'utilisateur connecté
 @router.post("/chats")
 def create_chat(
 #   Vérifie que l'utilisateur est authentifié avant de créer un chat
@@ -61,14 +62,9 @@ def create_chat(
     session: Session = Depends(get_session)
 ):
 
+    articles=fetch_top_news()
     # 1. construire system prompt + news du jour
-    system_prompt = f"""
-      {build_news_system_prompt()}
-
-      [ACTUALITÉS DU JOUR]
-
-      {build_news_context()}
-     """
+    system_prompt = build_news_system_prompt(articles)
       # Création du chat si l'utilisateur est authentifié
     chat = Chat(
             user_id=user_id,
@@ -76,23 +72,27 @@ def create_chat(
             system_prompt=system_prompt,
         )
 
+#   2. sauvegarde du chat en base de données
     session.add(chat)
     session.commit()
-     #    Recharge le chat pour avoir la bonne valeur de l'id généré par la base de données
+     #Recharge le chat pour avoir la bonne valeur de l'id généré par la base de données
     session.refresh(chat)
 
-    return {
-        "id": chat.id,
-        "user_id": chat.user_id,
-        "messages": chat.messages,
-        "system_prompt": chat.system_prompt,
-        "created_at": chat.created_at.isoformat()  # important pour React
-        }
-    
+	# Retourne à l'écran (front)
+#     return {
+#         "id": chat.id,
+#         "user_id": chat.user_id,
+#         "messages": chat.messages,
+#         "system_prompt": chat.system_prompt,
+#         "created_at": chat.created_at.isoformat()  # important pour React
+#         }
+    return chat
+
+# Structure attendue lorsqu'un utilisteur envoie un message
 class MessageRequest(BaseModel):
     content: str
 
-# Envoi un message dans un chat spécifique de l'utilisateur connecté
+# Gestion de la conversation avec l'IA
 @router.post("/chats/{chat_id}/messages")
 def send_message(
     chat_id: int,
@@ -100,62 +100,90 @@ def send_message(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session)
 ):
-        # 1. récupérer chat
+        # 1. récupére le chat demandé
         chat = session.get(Chat, chat_id)
 
         if not chat:
             raise HTTPException(status_code=404, detail="Chat introuvable")
 
-        # 2. sécurité
+        # 2. vérifie la sécurité
         if chat.user_id != user_id:
             raise HTTPException(status_code=403, detail="Accès interdit")
 
-        # 3. construire historique (sans le dernier message)
+        # 3. construit l'historique 
         history_text = build_history(chat.messages)
         
-        # 4. ajouter message utilisateur
+        # 4. le message utilisateur est ajouté à l'historique
         user_message = {
             "role": "user",
             "content": message.content
         }
         chat.messages = chat.messages + [user_message]
-
-        # ETAPE 5 : on préfixe le prompt avec le system_prompt sauvegardé en BDD
-        # ✅ C'est la façon fiable d'injecter le contexte dans pydantic-ai
-        # car run_sync() ne supporte pas de paramètre system_prompt à la volée
-        # Les anciens chats sans system_prompt fonctionnent normalement (fallback sur le prompt de l'agent)
-        
-        system_prompt = (chat.system_prompt or build_news_system_prompt())
         
         full_prompt = f"""
-			{system_prompt}
+{chat.system_prompt}
 
-			[Historique]
-			{history_text}
+[HISTORIQUE]
+{history_text}
 
-			[Nouveau message utilisateur]
-			{message.content}
-	    """
+[QUESTION]
+{message.content}
+"""
 
-        # 6. appel LLM
+        
+#      #   5.récupère et filtres les news
+#         articles = fetch_top_news()
+#      #    filtered_articles = filter_articles(
+#      #      articles,
+#      #      message.content
+#      #  )
+#         filtered_articles = articles[:15]
+        
+# 	#   6.les articles filtrés sont transformés en texte
+#         formatted_articles = "\n\n".join([
+#     f"Titre: {a['title']}\nRésumé: {a['summary']}"
+#     for a in filtered_articles
+# ])
+
+#         # 7.Construit le prompt au complet
+        
+#         system_prompt = (chat.system_prompt or build_news_system_prompt())
+        
+#         print("=== SYSTEM PROMPT ===")
+#         print(chat.system_prompt)
+        
+
+#         full_prompt = f"""
+#         {system_prompt}
+
+#         [HISTORIQUE]
+#         {history_text}
+
+#         [ACTUALITÉS FILTRÉES]
+#         {formatted_articles}
+
+#         [QUESTION UTILISATEUR]
+#         {message.content}
+#         """
+        
+        
+        # 8. Envoi le prompt à l'IA
         result = agent.run_sync(full_prompt)
 
-     #    assistant_response = result.output
 
-        # 7. Sauvegarde de la réponse de l'assistant dans l'historique du chat
+        # 9. Récupération de la réponse de l'IA
         assistant_message = {
             "role": "assistant",
             "content": result.output
         }
-
-     #    chat.messages.append(assistant_message)
         chat.messages = chat.messages + [assistant_message]
             
-        # 8. sauvegarde
+        # 10. sauvegarde en base
         session.add(chat)
         session.commit()
         session.refresh(chat)
 
+	# 11.Retour dans le frontend
         return {
             "response": result.output,
             "chat": chat.messages

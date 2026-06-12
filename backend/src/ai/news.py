@@ -57,7 +57,8 @@ def fetch_top_news() -> list[dict]:
                 articles.append(
                     {
                         "title": title,
-                        "summary": summary.strip()
+                        "summary": summary.strip(),
+                    #     "keywords": title.lower() + " " + summary.lower()
                     }
                 )
 
@@ -102,7 +103,7 @@ Actualités :
     return result.output.strip()
 
 
-def build_news_system_prompt() -> str:
+def build_news_system_prompt(articles: list[dict]) -> str:
     """
     Construit le prompt système complet : base fixe + actualités du jour
     Appelé une seule fois à la création du chat, résultat sauvegardé en BDD.
@@ -111,56 +112,47 @@ def build_news_system_prompt() -> str:
 
     """
 
-    return """
-Tu es l'assistant IA de NewsFoundry.
+    articles_text = "\n\n".join(
+        f"Titre : {a['title']}\nRésumé : {a['summary']}"
+        for a in articles
+    )
 
-Tu agis comme un rédacteur professionnel de revue de presse.
+    summary = summarize_news(articles)
 
+    return f"""
 MISSION
 
-Produire des synthèses d'actualité courtes, fiables et factuelles.
+Tu es un assistant spécialisé dans les actualités du jour.
 
-RÈGLES IMPORTANTES
+Tu utilises uniquement les actualités fournies ci-dessous.
 
-- Utiliser uniquement les actualités fournies dans le contexte.
-- Ne jamais utiliser des connaissances internes du modèle.
-- Ne jamais inventer d'informations.
-- Ne jamais inventer de dates.
-- Ne jamais compléter avec des événements non fournis.
-- Ne jamais mentionner :
-  - "date de ma dernière mise à jour"
-  - "selon mes connaissances"
-  - "je recommande de consulter"
-  - "sources"
-  - "liens"
-  - "pour en savoir plus"
-- Ne jamais afficher d'URL.
-- Ne jamais proposer de consulter un média.
-- Ne jamais poser une question à la fin.
-- Ne jamais ajouter de contenu extérieur aux actualités fournies.
+---
+
+ACTUALITÉS BRUTES :
+{articles_text}
+
+---
+
+SYNTHÈSE DES ACTUALITÉS :
+{summary}
+
+---
+
+CAPACITÉS
+- résumer
+- comparer
+- trier par thème
+- revue de presse
+
+CONTRAINTES
+- utiliser uniquement les données fournies
+- ne pas inventer d'informations
+- ne pas utiliser de sources externes
 
 STYLE
-
-- Ton journalistique neutre.
-- Phrases courtes.
-- Informations essentielles uniquement.
-- Regrouper les sujets similaires.
-
-Tu dois répondre uniquement en Markdown
-
-FORMAT OBLIGATOIRE
-
-REVUE DE PRESSE - [DATE]
-
-• Sujet :
-Résumé court.
-
-• Sujet :
-Résumé court.
-
-• Sujet :
-Résumé court.
-
+- journalistique
+- neutre
+- concis
 """
 
 def build_news_context() -> str:
@@ -180,18 +172,14 @@ def build_news_context() -> str:
         # 🔴 IMPORTANT : on utilise les vraies données ici
         formatted_articles = "\n\n".join(
             [
-                f"- Titre : {a['title']}\n  Résumé : {a['summary']}"
-                for a in articles[:8]
+                f" Titre : {a['title']}\n"
+                f" Résumé : {a['summary']}"
+                for a in articles[:20]
             ]
         )
 
         return f"""
 DATE ACTUELLE : {today}
-
-Tu ne connais aucune actualité en dehors de celles fournies.
-
-Si l'information n'est pas présente :
-Information non disponible dans les actualités fournies.
 
 ACTUALITÉS DU JOUR :
 
@@ -206,3 +194,19 @@ DATE ACTUELLE : {today}
 
 Aucune actualité disponible.
 """
+    
+def filter_articles(articles: list[dict], query: str) -> list[dict]:
+    """
+    Filtre simple des articles selon un mot-clé utilisateur.
+    """
+
+    if not query:
+        return articles
+
+    query = query.lower()
+
+    return [
+        a for a in articles
+        if query in a["title"].lower()
+        or query in a["summary"].lower()
+    ]

@@ -1,6 +1,6 @@
 def build_history(messages):
     """
-    Convertit ton JSON chat -> format PydanticAI
+    Convertit JSON chat -> format PydanticAI
     (version simple et compatible)
     """
 
