@@ -8,6 +8,8 @@ from src.ai.agent import agent
 from src.ai.history import build_history
 from src.ai.news import (build_news_system_prompt, fetch_top_news, filter_articles)
 from datetime import datetime
+from sqlalchemy.orm.attributes import flag_modified
+
 
 router = APIRouter()
 
@@ -78,14 +80,6 @@ def create_chat(
      #Recharge le chat pour avoir la bonne valeur de l'id généré par la base de données
     session.refresh(chat)
 
-	# Retourne à l'écran (front)
-#     return {
-#         "id": chat.id,
-#         "user_id": chat.user_id,
-#         "messages": chat.messages,
-#         "system_prompt": chat.system_prompt,
-#         "created_at": chat.created_at.isoformat()  # important pour React
-#         }
     return chat
 
 # Structure attendue lorsqu'un utilisteur envoie un message
@@ -110,81 +104,49 @@ def send_message(
         if chat.user_id != user_id:
             raise HTTPException(status_code=403, detail="Accès interdit")
 
-        # 3. construit l'historique 
-        history_text = build_history(chat.messages)
         
-        # 4. le message utilisateur est ajouté à l'historique
+        # 3. le message utilisateur est ajouté à l'historique
         user_message = {
             "role": "user",
             "content": message.content
         }
-        chat.messages = chat.messages + [user_message]
+        chat.messages.append(user_message)
+        flag_modified(chat, "messages")
         
-        full_prompt = f"""
-{chat.system_prompt}
+        # 4. historique avant l'ajout du message courant sinon il serait dupliqué.
+        history = build_history(chat.messages)
+     #    chat.messages = chat.messages + [user_message]
+        print("SYSTEM PROMPT DU CHAT", chat.system_prompt)
+        # 5. Appel de l'agent
 
-[HISTORIQUE]
-{history_text}
-
-[QUESTION]
-{message.content}
-"""
-
-        
-#      #   5.récupère et filtres les news
-#         articles = fetch_top_news()
-#      #    filtered_articles = filter_articles(
-#      #      articles,
-#      #      message.content
-#      #  )
-#         filtered_articles = articles[:15]
-        
-# 	#   6.les articles filtrés sont transformés en texte
-#         formatted_articles = "\n\n".join([
-#     f"Titre: {a['title']}\nRésumé: {a['summary']}"
-#     for a in filtered_articles
-# ])
-
-#         # 7.Construit le prompt au complet
-        
-#         system_prompt = (chat.system_prompt or build_news_system_prompt())
-        
-#         print("=== SYSTEM PROMPT ===")
-#         print(chat.system_prompt)
-        
-
-#         full_prompt = f"""
-#         {system_prompt}
-
-#         [HISTORIQUE]
-#         {history_text}
-
-#         [ACTUALITÉS FILTRÉES]
-#         {formatted_articles}
-
-#         [QUESTION UTILISATEUR]
-#         {message.content}
-#         """
-        
-        
-        # 8. Envoi le prompt à l'IA
-        result = agent.run_sync(full_prompt)
-
-
-        # 9. Récupération de la réponse de l'IA
+        result=agent.run_sync(
+           message.content,
+           message_history=history,
+           deps=chat.system_prompt
+        )
+        print("TYPE =", type(result.output))
+        # 6. Récupération de la réponse de l'IA
         assistant_message = {
             "role": "assistant",
             "content": result.output
         }
-        chat.messages = chat.messages + [assistant_message]
+        chat.messages.append(assistant_message)
+     #    chat.messages = chat.messages + [assistant_message]
+        flag_modified(chat, "messages")
             
-        # 10. sauvegarde en base
+        # 7. sauvegarde en base
         session.add(chat)
+
+        
+        print("Avant commit :", len(chat.messages))
         session.commit()
         session.refresh(chat)
-
-	# 11.Retour dans le frontend
+        print("Après commit :", len(chat.messages))
+        
+	# 8.Retour dans le frontend
         return {
             "response": result.output,
             "chat": chat.messages
         }
+
+

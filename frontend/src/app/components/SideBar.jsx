@@ -16,11 +16,9 @@ export default function SideBar(){
 		router.push("/chat");
 	}
 
-	const visibleChats = chats
-		.filter(chat => chat.messages?.length > 0)
-		.sort(
-		(a, b) =>
-			new Date(b.created_at) - new Date(a.created_at)
+	const visibleChats = [...chats].sort(
+  		(a, b) =>
+    		new Date(b.created_at) - new Date(a.created_at)
 	);
 
 	return(

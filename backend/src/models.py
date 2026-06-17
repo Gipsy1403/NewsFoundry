@@ -30,3 +30,23 @@ class Chat(SQLModel, table=True):
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
     )
+
+class PressReview(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    # discussion à l'origine de la revue de presse
+    chat_id: int = Field(index=True)
+    # sujet choisi par l'utilisateur
+    subject: str
+    # titre généré par l'agent
+    title: str
+#     # synthèse générale du sujet
+#     global_summary: str
+#     # résumés par article : liste de {"article_title": ..., "summary": ...}
+#     article_summaries: List[Dict[str, Any]] = Field(
+#         sa_column=Column(JSON, nullable=False),
+#         default_factory=list
+#     )
+    markdown_content:str
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )

@@ -1,45 +1,83 @@
-from pydantic_ai import Agent
+from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.mistral import MistralModel
+from datetime import date
 from src.ai.tools import search_news as _search_news
+
 
 model = MistralModel("mistral-small")
 
-agent = Agent(model)
+
+agent = Agent(
+    model,
+    # contiendra le system_prompt "actualités du jour" du chat
+    deps_type=str,
+    system_prompt="""
+Tu es NewsFoundry, un assistant spécialisé dans l'analyse
+et la synthèse d'actualités.
+
+Pour toute question relative à la date actuelle, au jour actuel, au mois actuel ou à l'année en cours, utilise l'outil current_date.
+
+Quand l'utilisateur souhaite :
+
+- approfondir un sujet,
+- obtenir davantage d'informations,
+- explorer une actualité,
+- rechercher des articles récents,
+
+utilise l'outil search_news.
+
+Base tes réponses sur les articles récupérés.
+
+Lorsque plusieurs articles sont trouvés :
+- identifie les points communs,
+- résume les informations importantes,
+- cite les titres lorsque c'est pertinent.
+
+"""
+)
+
+@agent.system_prompt
+def add_chat_context(ctx: RunContext[str]) -> str:
+    """
+    Ajoute le contexte spécifique au chat (actualités du jour),
+    généré une fois à la création du chat et stocké en BDD.
+    """
+    return ctx.deps or ""
 
 
-# Tool : recherche d'articles sur un sujet
 @agent.tool_plain
-def search_news(query: str, max_results: int = 5) -> str:
+def search_news(
+    query: str,
+    max_results: int = 5,
+) -> list[dict]:
     """
-    Recherche des articles d'actualité sur le sujet demandé par l'utilisateur.
+    Recherche des articles récents sur un sujet.
 
-    Utilise cet outil quand l'utilisateur veut approfondir un sujet,
-    obtenir plus d'informations ou explorer un thème précis.
+    Utilise cet outil lorsque l'utilisateur :
+    - demande plus d'informations,
+    - souhaite approfondir un sujet,
+    - cherche des actualités récentes,
+    - veut explorer un thème particulier.
 
-    Paramètres
-    ----------
-    query       : sujet ou mots-clés à rechercher (en français de préférence)
-    max_results : nombre d'articles souhaités (entre 1 et 10, défaut 5)
+    Args:
+        query: sujet ou mots-clés à rechercher
+        max_results: nombre d'articles souhaités (1 à 10)
 
-    Retour
-    ------
-    Résumé textuel des articles trouvés, prêt à être utilisé dans ta réponse.
+    Returns:
+        Liste simplifiée d'articles contenant :
+        - title
+        - summary
+        - source
+        - date
     """
 
-    try:
-        articles = _search_news(query=query, max_results=max_results)
+    return _search_news(
+        query=query,
+        max_results=max_results,
+    )
 
-        if not articles:
-            return f"Aucun article trouvé pour le sujet : « {query} »."
 
-        lines = [f"Résultats de recherche pour « {query} » ({len(articles)} articles) :\n"]
-
-        for i, art in enumerate(articles, start=1):
-            lines.append(f"{i}. {art['title']} ({art['date']})")
-            if art["summary"]:
-                lines.append(f"   {art['summary']}")
-
-        return "\n".join(lines)
-
-    except Exception as e:
-        return f"Erreur lors de la recherche d'articles : {e}"
+@agent.tool_plain
+def current_date() -> str:
+    """Retourne la date du jour."""
+    return date.today().strftime("%d/%m/%Y")

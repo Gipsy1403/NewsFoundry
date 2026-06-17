@@ -181,6 +181,8 @@ def build_news_context() -> str:
         return f"""
 DATE ACTUELLE : {today}
 
+Pour toute question concernant la date actuelle, utilise l'outil current_date.
+
 ACTUALITÉS DU JOUR :
 
 {formatted_articles}

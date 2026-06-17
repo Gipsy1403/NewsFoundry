@@ -6,6 +6,7 @@ from src.routes.auth import router as auth_router
 from src.routes.chats import router as chats_router
 import sys
 from fastapi.middleware.cors import CORSMiddleware
+from src.routes.pressReviews import router as press_reviews_router
 
 app = FastAPI()
 
@@ -23,6 +24,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(chats_router)
+app.include_router(press_reviews_router)
 
 @app.get("/")
 async def hello():

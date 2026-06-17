@@ -1,11 +1,52 @@
+"use client";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import styles from "../../styles/modal.module.css"
+import { useState } from "react";
+import { useChat } from "@/context/ChatContext";
+import { usePressReview } from "@/context/PressReviewContext";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Modal({openModal, setOpenModal}) {
+	const [subject, setSubject] = useState("");
+	const { chatId } = useChat();
+	const { createPressReview, creating } = usePressReview();
+	console.log("CREATE PRESS REVIEW CALLED");
+	const router = useRouter();
+
+	async function handleSubmit(e) {
+		console.log("CLICK OK");
+		e.preventDefault();
+		if (!subject.trim()) {
+			toast.error("Veuillez saisir un thème.");
+			return;
+		}
+		if (!chatId) {
+			toast.error("Aucune conversation active.");
+			return;
+		}
+
+		try {
+			const review = await createPressReview(chatId, subject);
+
+			toast.success("Revue de presse générée !");
+			setOpenModal(false);
+			setSubject("");
+			router.push("/pressreview");
+
+		} catch (error) {
+			console.error(error);
+
+			toast.error(
+				error.message || "Erreur lors de la génération."
+			);
+		}
+	}
+	
 	return (
 		<>
-			<Dialog.Root open={openModal}
-	onOpenChange={setOpenModal}>
+			<Dialog.Root open={openModal} onOpenChange={setOpenModal}>
 				<Dialog.Overlay className={styles.overlay}/>
 				<Dialog.Portal>
 					<Dialog.Content className={styles.content}>
@@ -16,16 +57,18 @@ export default function Modal({openModal, setOpenModal}) {
 						<Dialog.Title className={styles.title}>Générer une revue de presse</Dialog.Title>
 						{/* {error && <p styles={{ color: "red" }}>{error}</p>} */}
 						<p className={styles.subTitle}>Donner un titre à votre revue de presse</p>
-						<form>
+						<form onSubmit={handleSubmit}>
 						{/* <form onSubmit={handleSubmit}> */}
 							<div className={styles.field}>
-								<label className={styles.label} htmlFor="title">Thème de la revue de presse</label>
+								<label className={styles.label} htmlFor="subject">Thème de la revue de presse</label>
 								<input
 									className={styles.input}
-									id="title"
+									id="subject"
 									type="text"
-									// value={title}
-									// onChange={(e) => setTitle(e.target.value)}
+									placeholder="Ex : Intelligence artificielle, Économie..."
+									value={subject}
+									onChange={(e) => setSubject(e.target.value)}
+									disabled={creating}
 
 								/>
 							</div>
