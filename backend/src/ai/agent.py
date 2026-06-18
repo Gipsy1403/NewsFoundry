@@ -1,7 +1,7 @@
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.mistral import MistralModel
 from datetime import date
-from src.ai.tools import search_news as _search_news
+from src.ai.fetchWorldNews import fetch_world_news 
 
 
 model = MistralModel("mistral-small")
@@ -9,8 +9,8 @@ model = MistralModel("mistral-small")
 
 agent = Agent(
     model,
-    # contiendra le system_prompt "actualités du jour" du chat
     deps_type=str,
+    output_type=str,
     system_prompt="""
 Tu es NewsFoundry, un assistant spécialisé dans l'analyse
 et la synthèse d'actualités.
@@ -44,34 +44,17 @@ def add_chat_context(ctx: RunContext[str]) -> str:
     """
     return ctx.deps or ""
 
-
 @agent.tool_plain
 def search_news(
     query: str,
     max_results: int = 5,
 ) -> list[dict]:
     """
-    Recherche des articles récents sur un sujet.
-
-    Utilise cet outil lorsque l'utilisateur :
-    - demande plus d'informations,
-    - souhaite approfondir un sujet,
-    - cherche des actualités récentes,
-    - veut explorer un thème particulier.
-
-    Args:
-        query: sujet ou mots-clés à rechercher
-        max_results: nombre d'articles souhaités (1 à 10)
-
-    Returns:
-        Liste simplifiée d'articles contenant :
-        - title
-        - summary
-        - source
-        - date
+Recherche des articles récents sur un sujet.
+Retourne un format simplifié...
     """
 
-    return _search_news(
+    return fetch_world_news(
         query=query,
         max_results=max_results,
     )

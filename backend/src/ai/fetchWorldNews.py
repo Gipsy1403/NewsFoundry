@@ -5,7 +5,7 @@ WORLD_NEWS_API_KEY = os.getenv("WORLD_NEWS_API_KEY")
 WORLD_NEWS_SEARCH_URL = "https://api.worldnewsapi.com/search-news"
 
 
-def search_news(query: str, max_results: int = 5) -> list[dict]:
+def fetch_world_news(query: str, max_results: int = 5) -> list[dict]:
     """
     Recherche des articles récents sur un sujet.
     Retourne un format simplifié pour faciliter l'utilisation par le LLM.
@@ -56,3 +56,5 @@ def search_news(query: str, max_results: int = 5) -> list[dict]:
         })
 
     return articles
+
+

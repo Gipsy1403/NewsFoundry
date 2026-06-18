@@ -24,7 +24,7 @@ class Chat(SQLModel, table=True):
 
     # Stockage du system prompt utilisé à la création du chat
     # Optional[str] car les anciens chats n'en auront pas (rétrocompatibilité)
-    system_prompt: Optional[str] = Field(default=None)
+    context: Optional[str] = Field(default=None)
 
 #     Date de création du chat
     created_at: datetime = Field(

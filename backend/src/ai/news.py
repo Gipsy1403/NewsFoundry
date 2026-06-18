@@ -100,7 +100,10 @@ Actualités :
 
     result = agent.run_sync(prompt)
 
+
     return result.output.strip()
+# #     return result.output.strip()
+
 
 
 def build_news_system_prompt(articles: list[dict]) -> str:
@@ -155,60 +158,60 @@ STYLE
 - concis
 """
 
-def build_news_context() -> str:
-    """
-    Construit le contexte actualités.
-    Appelé à chaque message du chat, doit être rapide à construire.
-	- Récupérer les actualités du jour via l'API
-	- Générer une synthèse courte
-	- Formater le tout dans un contexte clair pour l'IA
-    """
+# def build_news_context() -> str:
+#     """
+#     Construit le contexte actualités.
+#     Appelé à chaque message du chat, doit être rapide à construire.
+# 	- Récupérer les actualités du jour via l'API
+# 	- Générer une synthèse courte
+# 	- Formater le tout dans un contexte clair pour l'IA
+#     """
 
-    today = date.today().strftime("%d/%m/%Y")
+#     today = date.today().strftime("%d/%m/%Y")
 
-    try:
-        articles = fetch_top_news()
+#     try:
+#         articles = fetch_top_news()
 
-        # 🔴 IMPORTANT : on utilise les vraies données ici
-        formatted_articles = "\n\n".join(
-            [
-                f" Titre : {a['title']}\n"
-                f" Résumé : {a['summary']}"
-                for a in articles[:20]
-            ]
-        )
+#         # 🔴 IMPORTANT : on utilise les vraies données ici
+#         formatted_articles = "\n\n".join(
+#             [
+#                 f" Titre : {a['title']}\n"
+#                 f" Résumé : {a['summary']}"
+#                 for a in articles[:20]
+#             ]
+#         )
 
-        return f"""
-DATE ACTUELLE : {today}
+#         return f"""
+# DATE ACTUELLE : {today}
 
-Pour toute question concernant la date actuelle, utilise l'outil current_date.
+# Pour toute question concernant la date actuelle, utilise l'outil current_date.
 
-ACTUALITÉS DU JOUR :
+# ACTUALITÉS DU JOUR :
 
-{formatted_articles}
-"""
+# {formatted_articles}
+# """
 
-    except Exception as e:
-        print(f"[NewsFoundry] Erreur actualités : {e}")
+#     except Exception as e:
+#         print(f"[NewsFoundry] Erreur actualités : {e}")
 
-        return f"""
-DATE ACTUELLE : {today}
+#         return f"""
+# DATE ACTUELLE : {today}
 
-Aucune actualité disponible.
-"""
+# Aucune actualité disponible.
+# """
     
-def filter_articles(articles: list[dict], query: str) -> list[dict]:
-    """
-    Filtre simple des articles selon un mot-clé utilisateur.
-    """
+# def filter_articles(articles: list[dict], query: str) -> list[dict]:
+#     """
+#     Filtre simple des articles selon un mot-clé utilisateur.
+#     """
 
-    if not query:
-        return articles
+#     if not query:
+#         return articles
 
-    query = query.lower()
+#     query = query.lower()
 
-    return [
-        a for a in articles
-        if query in a["title"].lower()
-        or query in a["summary"].lower()
-    ]
+#     return [
+#         a for a in articles
+#         if query in a["title"].lower()
+#         or query in a["summary"].lower()
+#     ]

@@ -8,6 +8,8 @@ from src.models import Chat, PressReview
 from src.auth.dependencies import get_current_user_id
 from src.ai.history import build_history
 from src.ai.pressReviewAgent import press_review_agent
+from src.utils.formatFrenchDate import format_french_date
+from datetime import datetime
 
 router = APIRouter()
 
@@ -24,100 +26,91 @@ def create_press_review(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
+    # -------------------------
+    # 1. Vérification chat
+    # -------------------------
+    chat = session.get(Chat, chat_id)
+
+    if not chat:
+        raise HTTPException(status_code=404, detail="Chat introuvable")
+
+    if chat.user_id != user_id:
+        raise HTTPException(status_code=403, detail="Accès interdit")
+
+    # -------------------------
+    # 2. Historique PydanticAI
+    # -------------------------
+    history = build_history(chat.messages)
+
+    # -------------------------
+    # 3. Appel agent IA
+    # -------------------------
     try:
-        print("ETAPE 1")
+        result = press_review_agent.run_sync(
+            f"""
+Sujet de la revue de presse : {data.subject}
 
-        chat = session.get(Chat, chat_id)
-
-        if not chat:
-            raise HTTPException(status_code=404, detail="Chat introuvable")
-
-        if chat.user_id != user_id:
-            raise HTTPException(status_code=403, detail="Accès interdit")
-
-        history = build_history(chat.messages)
-
-        # 🧠 appel IA avec gestion d'erreur spécifique
-        try:
-            result = press_review_agent.run_sync(
-                f"Sujet de la revue de presse : {data.subject}",
-                message_history=history,
-            )
-
-        except ModelHTTPError:
-            raise HTTPException(
-                status_code=503,
-                detail="Le service IA est temporairement indisponible."
-            )
-
-        output = result.output
-
-        press_review = PressReview(
-            chat_id=chat.id,
-            subject=data.subject,
-            title=output.title,
-            markdown_content=output.markdown_content,
+Consigne :
+Analyse toute la conversation et construis une revue de presse structurée.
+""",
+            message_history=history,
         )
 
-        session.add(press_review)
-        session.commit()
-        session.refresh(press_review)
-
-        return press_review
-
-    except Exception as e:
-        print("🔥 ERREUR =", repr(e))
+    except ModelHTTPError:
         raise HTTPException(
-            status_code=500,
-            detail="Une erreur interne est survenue"
+            status_code=503,
+            detail="Service IA indisponible"
         )
 
-# @router.post("/chats/{chat_id}/press-reviews")
-# def create_press_review(
-#     chat_id: int,
-#     data: PressReviewRequest,
-#     user_id: int = Depends(get_current_user_id),
-#     session: Session = Depends(get_session),
-# ):
-#     try:
-#         print("ETAPE 1")
-#         chat = session.get(Chat, chat_id)
+    output = result.output
 
-#         if not chat:
-#             raise HTTPException(status_code=404, detail="Chat introuvable")
+    # -------------------------
+    # 4. Formatage backend 
+    # -------------------------
 
-#         if chat.user_id != user_id:
-#             raise HTTPException(status_code=403, detail="Accès interdit")
+    formatted_date = format_french_date(datetime.now())
+    formatted_title = f"REVUE DE PRESSE {data.subject.upper()} - {formatted_date}"
+
+    markdown_content = f"""
+# {formatted_title}
 
 
-#         history = build_history(chat.messages)
 
-#         result = press_review_agent.run_sync(
-#             f"Sujet de la revue de presse : {data.subject}",
-#             message_history=history,
-#         )
+## Synthèse
 
-#         output = result.output
+{output.global_summary}
 
-#         press_review = PressReview(
-#             chat_id=chat.id,
-#             subject=data.subject,
-#             title=output.title,
-#             markdown_content=output.markdown_content,
-#         )
 
-#         session.add(press_review)
-#         session.commit()
-#         session.refresh(press_review)
 
-#         return press_review
+## Articles
 
-#     except Exception as e:
-#         print("🔥 ERREUR =", repr(e))
-#         raise HTTPException(
-#             status_code=500,
-#             detail="Une erreur interne est survenue"
-# 	   )
+""" + "\n\n".join(
+        f"### {a.title}\n{a.summary}\n\n"
+        for a in output.article_summaries
+    ) + f"""
+
+
+
+## Perspectives
+
+{output.perspectives}
+""".strip()
+
+    # -------------------------
+    # 5. DB save
+    # -------------------------
+    press_review = PressReview(
+        chat_id=chat.id,
+        subject=data.subject,
+        title=formatted_title,
+        markdown_content=markdown_content,
+    )
+
+    session.add(press_review)
+    session.commit()
+    session.refresh(press_review)
+
+    return press_review
 
 
 # Liste toutes les revues de presse de l'utilisateur connecté (toutes discussions confondues) (Page/review)

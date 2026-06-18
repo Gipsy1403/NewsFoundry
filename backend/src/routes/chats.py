@@ -6,8 +6,7 @@ from src.models import Chat
 from src.auth.dependencies import get_current_user_id
 from src.ai.agent import agent
 from src.ai.history import build_history
-from src.ai.news import (build_news_system_prompt, fetch_top_news, filter_articles)
-from datetime import datetime
+from src.ai.news import (build_news_system_prompt, fetch_top_news)
 from sqlalchemy.orm.attributes import flag_modified
 
 
@@ -66,12 +65,12 @@ def create_chat(
 
     articles=fetch_top_news()
     # 1. construire system prompt + news du jour
-    system_prompt = build_news_system_prompt(articles)
+    context= build_news_system_prompt(articles)
       # Création du chat si l'utilisateur est authentifié
     chat = Chat(
             user_id=user_id,
             messages=[],
-            system_prompt=system_prompt,
+            context=context,
         )
 
 #   2. sauvegarde du chat en base de données
@@ -116,19 +115,22 @@ def send_message(
         # 4. historique avant l'ajout du message courant sinon il serait dupliqué.
         history = build_history(chat.messages)
      #    chat.messages = chat.messages + [user_message]
-        print("SYSTEM PROMPT DU CHAT", chat.system_prompt)
+
         # 5. Appel de l'agent
 
         result=agent.run_sync(
            message.content,
            message_history=history,
-           deps=chat.system_prompt
+           deps=chat.context
         )
-        print("TYPE =", type(result.output))
+        print("TYPE RESULT",type(result))
+        print("RESULT",result)
+        print("DIR RESULT",dir(result))
         # 6. Récupération de la réponse de l'IA
         assistant_message = {
             "role": "assistant",
             "content": result.output
+          #   "content": result.output
         }
         chat.messages.append(assistant_message)
      #    chat.messages = chat.messages + [assistant_message]
@@ -146,6 +148,7 @@ def send_message(
 	# 8.Retour dans le frontend
         return {
             "response": result.output,
+          #   "response": result.output,
             "chat": chat.messages
         }
 

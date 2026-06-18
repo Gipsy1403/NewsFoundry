@@ -1,22 +1,3 @@
-# def build_history(messages):
-#     """
-#     Convertit JSON chat -> format PydanticAI
-#     """
-
-#     history = []
-
-#     for msg in messages:
-
-#         role = msg["role"]
-#         content = msg["content"]
-
-#         # On reconstruit un format texte simple
-#         history.append({
-#             "role": role,
-#           "content": content})
-
-#     return history
-
 from pydantic_ai.messages import ModelRequest, ModelResponse, UserPromptPart, TextPart
 
 
@@ -42,5 +23,5 @@ def build_history(messages):
             history.append(
                 ModelResponse(parts=[TextPart(content=content)])
             )
-
+            
     return history
