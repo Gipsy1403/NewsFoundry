@@ -14,6 +14,7 @@ export default function Footer() {
 	const [message, setMessage] = useState("");
 	const { sendMessage } = useChat();
 	const router=useRouter();
+	const[inputFocus, setInputFocus]=useState(false);
 
 	async function handleSend() {
 		if (!message.trim()) return;
@@ -50,7 +51,7 @@ export default function Footer() {
 			{/* INPUT CHAT */}
 			<div className={styles.inputBar}>
 				<input
-					className={styles.input}
+					className={`${styles.input} ${inputFocus ? styles.inputFocus : ""}`}
 					type="text"
 					placeholder="Tapez votre message ici..."
 					value={message}
@@ -58,10 +59,12 @@ export default function Footer() {
 						setMessage(e.target.value)
 					}
 					onKeyDown={handleKeyDown}
+					onFocus={()=>setInputFocus(true)}
+					onBlur={()=>setInputFocus(false)}
 				/>
 
 				<button
-					className={styles.sendButton}
+					className={`${styles.sendButton} ${inputFocus ? styles.sendButtonFocused : ""}`}
 					onClick={handleSend}
 				>
 					<FontAwesomeIcon

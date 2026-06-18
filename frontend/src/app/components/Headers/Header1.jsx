@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Header1() {
 	const pathname=usePathname();
 	const isChat=pathname==="/home";
-	const isReviewPress=pathname==="/review"
+	const isReviewPress=pathname==="/pressreview"
 
 	return (
 		<header className={styles.header}>
@@ -27,7 +27,7 @@ export default function Header1() {
 						Chat
 					</button>
 				</Link>
-				<Link href="/review">
+				<Link href="/pressreview">
 					<button className={`${styles.btn} ${isReviewPress ? styles.active : styles.disabled}`}>
 						<FontAwesomeIcon className={styles.icon} icon={faFileLines} />
 						Revue de presse

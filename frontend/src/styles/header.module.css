@@ -69,29 +69,27 @@
 .discussion{
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: 1rem;
 	align-items: center;
 }
 .iconDiscussion{
 	font-size: 18px;
+	all: unset;
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 12px;
 }
+.iconDiscussion:hover{
+	background-color: var(--header);
+	color: var(--white);
+} 
 .text{
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
 	gap: 10px;
 }
-.textDiscussion{
-	font-size: var(--headings);
-	all: unset;
-	cursor: pointer;
-}
-.textDiscussion:hover{
-	background-color: var(--header);
-	color: var(--white);
-	padding: 3px;
-	border-radius: 12px;
-}
+
 .textConversation{
 	font-size: var(--bodyxs);
 	color: var(--color600);

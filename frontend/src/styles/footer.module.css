@@ -44,6 +44,10 @@
   border: none;
   font-size: var(--bodyxs);
 }
+.inputFocus {
+  border: 2px solid var(--header);
+  outline: none;
+}
 
 /* BUTTON SEND */
 .sendButton {
@@ -58,4 +62,7 @@
   border: none;
   cursor: pointer;
   color: var(--white);
+}
+.sendButtonFocused {
+  background-color: var(--header);
 }

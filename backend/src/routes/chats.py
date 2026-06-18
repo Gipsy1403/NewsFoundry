@@ -8,6 +8,7 @@ from src.ai.agent import agent
 from src.ai.history import build_history
 from src.ai.news import (build_news_system_prompt, fetch_top_news)
 from sqlalchemy.orm.attributes import flag_modified
+from sqlalchemy.exc import SQLAlchemyError
 
 
 router = APIRouter()
@@ -18,15 +19,26 @@ def get_chats(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session)
 ):
-#     with Session(engine) as session:
-
+    try:
         chats = session.exec(
-            select(Chat).where(
-                Chat.user_id == user_id
-            )
+            select(Chat).where(Chat.user_id == user_id)
         ).all()
 
         return chats
+
+    except SQLAlchemyError:
+        # Erreur base de données
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur lors de la récupération des chats"
+        )
+     #    chats = session.exec(
+     #        select(Chat).where(
+     #            Chat.user_id == user_id
+     #        )
+     #    ).all()
+
+     #    return chats
 
 # Récupère un chat spécifique de l'utilisateur connecté
 @router.get("/chats/{chat_id}")
@@ -35,18 +47,17 @@ def get_chat(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session)
 ):
-#     with Session(engine) as session:
-
+    try:
         chat = session.get(Chat, chat_id)
 
-        # Vérifie que le chat existe
+        # 404 : chat inexistant
         if not chat:
             raise HTTPException(
                 status_code=404,
                 detail="Chat introuvable"
             )
 
-        # Vérifie que le chat appartient au user connecté
+        # 403 : pas le bon utilisateur
         if chat.user_id != user_id:
             raise HTTPException(
                 status_code=403,
@@ -54,6 +65,32 @@ def get_chat(
             )
 
         return chat
+
+    except SQLAlchemyError:
+        # 500 : erreur base de données
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur serveur lors de la récupération du chat"
+        )
+
+
+     #    chat = session.get(Chat, chat_id)
+
+     #    # Vérifie que le chat existe
+     #    if not chat:
+     #        raise HTTPException(
+     #            status_code=404,
+     #            detail="Chat introuvable"
+     #        )
+
+     #    # Vérifie que le chat appartient au user connecté
+     #    if chat.user_id != user_id:
+     #        raise HTTPException(
+     #            status_code=403,
+     #            detail="Accès interdit"
+     #        )
+
+     #    return chat
 
 # Création d'un nouveau chat pour l'utilisateur connecté
 @router.post("/chats")

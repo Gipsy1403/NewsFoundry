@@ -5,6 +5,7 @@ import SideBar from "./components/SideBar";
 import Footer from "./components/Footers/FooterLogout";
 import styles from "./layout.module.css"
 
+
 config.autoAddCss = false;
 import "./globals.css";
 import HeaderDynamic from "./components/Headers/HeaderDynamic";

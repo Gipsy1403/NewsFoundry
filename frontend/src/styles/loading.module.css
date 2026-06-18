@@ -2,33 +2,80 @@
 /*     LOADING     */
 /* *************** */
 
-.container {
-	width: 100%;
-	padding: 10px;
+/* Overlay sombre sur toute la page */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* Assombrit la page derrière */
+  background: rgba(0, 0, 0, 0.6);
+
+  /* Centre le contenu */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
 }
 
-.ProgressRoot {
-	position: relative;
-	overflow: hidden;
-	background-color: var(--white);
-	border-radius: 9999px;
-	width: 100px;
-	height: 4px;
+/* Conteneur du loader */
+.loaderBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-.ProgressIndicator {
-	width: 100%;
-	height: 100%;
-	background-color: var(--header);
-	animation: loading 1.5s infinite linear;
-	transform-origin: left;
+/* Spinner */
+.spinner {
+  width: 60px;
+  height: 60px;
+
+  border: 6px solid rgba(255, 255, 255, 0.2);
+  border-top: 6px solid #ffffff;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
 }
 
-@keyframes loading {
-	0% {
-		transform: translateX(-100%);
-	}
-	100% {
-		transform: translateX(100%);
-	}
+/* Animation rotation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Zone du texte */
+.textWrapper {
+  width: 500px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Texte qui défile */
+.text {
+  display: inline-block;
+  color: white;
+  font-size: 16px;
+
+  animation: slideText 2.5s linear infinite;
+}
+
+/* Animation type “marquee” */
+@keyframes slideText {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useChat } from "@/context/ChatContext";
 import ReactMarkdown from "react-markdown";
-import Loading from "@/app/components/loading";
+import Loading from "@/app/loading";
 
 
 export default function Chat() {

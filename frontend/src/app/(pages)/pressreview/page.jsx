@@ -15,11 +15,40 @@ export default function PressReview() {
 	const [expandedId, setExpandedId] = useState(null);
 
 	function formatDate(dateStr) {
-	return new Date(dateStr).toLocaleDateString("fr-FR", {
+		const date=new Date(dateStr);
+	return date.toLocaleDateString("fr-FR", {
+		weekday:"long",
 		day: "numeric",
 		month: "long",
 		year: "numeric",
+		hour:"2-digit",
+		minute:"2-digit",
 	});
+	}
+
+	function getWeekNumber(date) {
+		const d = new Date(Date.UTC(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate()
+		));
+
+		// Lundi = début de semaine ISO
+		const dayNum = d.getUTCDay() || 7;
+		d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+
+		const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+
+		return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+	}
+
+	function buildReviewTitle(subject, dateStr) {
+		const date = new Date(dateStr);
+
+		const weekNumber = getWeekNumber(date);
+		const year = date.getFullYear();
+
+		return `Actualités ${subject} - Semaine ${weekNumber}`;
 	}
 
 	function handleCopy(review) {
@@ -57,7 +86,11 @@ export default function PressReview() {
 				{/* HEADER */}
 				<div className={styles.headerCard}>
 				<div>
-					<p className={styles.titleCard}>{review.title}</p>
+					<p className={styles.titleCard}>{buildReviewTitle(
+							review.subject,
+							review.created_at
+						)}</p>
+					{/* <p className={styles.titleCard}>{review.title}</p> */}
 
 					<div className={styles.dateCard}>
 					<FontAwesomeIcon
@@ -78,9 +111,9 @@ export default function PressReview() {
 
 				{/* CONTENT MARKDOWN */}
 				<div className={styles.markdown}>
-				<ReactMarkdown>
-					{review.markdown_content}
-				</ReactMarkdown>
+					<ReactMarkdown>
+						{review.markdown_content}
+					</ReactMarkdown>
 				</div>
 			</div>
 			))}

@@ -29,10 +29,13 @@ export default function Header2() {
 				<div className={styles.barDiscussion}>
 					<div className={styles.discussion}>
 						<Link href="/home">
-							<FontAwesomeIcon className={styles.iconDiscussion} icon={faArrowLeftLong} />
+							<button className={styles.iconDiscussion} aria-roledescription="Générer une nouvelle discussion">
+								<FontAwesomeIcon icon={faArrowLeftLong} />
+							</button>
 						</Link>
 						<div className={styles.text}>
-							<button className={styles.textDiscussion} onClick={startNewChat}>Nouvelle discussion</button>
+							<p className={styles.textDiscussion} onClick={startNewChat}>Nouvelle discussion</p>
+							{/* <button className={styles.textDiscussion} onClick={startNewChat}>Nouvelle discussion</button> */}
 							<p className={styles.textConversation}>Conversation active</p>
 						</div>
 					</div>
