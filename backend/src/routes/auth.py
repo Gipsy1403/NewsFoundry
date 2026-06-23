@@ -31,9 +31,6 @@ def login(data: LoginRequest, session: Session = Depends(get_session)):
     """
     Authentifie un utilisateur et retourne un JWT
     """
-
-#     with Session(engine) as session:
-
         # 1. Chercher utilisateur en base
     user = session.exec(
             select(User).where(User.email == data.email)
@@ -46,7 +43,7 @@ def login(data: LoginRequest, session: Session = Depends(get_session)):
                 detail="Identifiants invalides"
             )
 
-        # 4. Créer token JWT
+        # 3. Créer token JWT
     token = create_access_token(
             data={"user_id": user.id, "email": user.email}
         )

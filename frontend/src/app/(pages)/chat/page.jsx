@@ -12,8 +12,8 @@ import { useEffect, useRef } from "react";
 
 
 export default function Chat() {
-	const { messages, loading } = useChat();
-	const lastMessageRef=useRef(null);
+	const { messages, loading, error } = useChat();
+	const lastMessageRef = useRef(null);
 
 	useEffect(() => {
 		if (lastMessageRef.current) {
@@ -62,7 +62,7 @@ export default function Chat() {
 							</Avatar.Root>
 
 							<div className={styles.assistantMessage}
-								ref={index===message.length-1 ? lastMessageRef:null}
+								ref={index===messages.length-1 ? lastMessageRef:null}
 								tabIndex={0}
 								aria-label={`Réponse assistant envoyée à ${message.time}`}>
 									<ReactMarkdown>{message.content}</ReactMarkdown>
@@ -70,6 +70,11 @@ export default function Chat() {
 							</div>
 						</div>
 					)
+				)}
+				{error && (
+					<div className={styles.errorMessage} role="alert">
+						{error}
+					</div>
 				)}
 				{loading && <Loading/>}
 			</div>

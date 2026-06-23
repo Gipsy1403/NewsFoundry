@@ -1,7 +1,6 @@
 import os
 from src.models import User
 from sqlmodel import SQLModel, Session, create_engine, select
-# import bcrypt
 from passlib.context import CryptContext
 
 DATABASE_URL = os.getenv("DATABASE_URL","sqlite:///test.db")
@@ -31,9 +30,6 @@ def init_db():
             session.add(
                 User(
                     email=default_email,
-                    # hashed_password=bcrypt.hashpw(
-                    #     default_password.encode("utf-8"), bcrypt.gensalt()
-                    # ),
                     hashed_password=pwd_context.hash(default_password)
                 )
             )

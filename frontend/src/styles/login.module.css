@@ -56,6 +56,16 @@
 	background-color: var(--dark);
 	font-size: var(--bodyxs);
 	color: var(--color100);
+	cursor: pointer;
+}
+/* Boutons principaux : Se connecter */
+.btn:hover {
+	background-color: var(--color800);
+}
+.btn:disabled {
+	background-color: var(--color400);
+	color: var(--color700);
+	cursor: not-allowed;
 }
 .input:focus-visible,
 .btn:focus-visible {

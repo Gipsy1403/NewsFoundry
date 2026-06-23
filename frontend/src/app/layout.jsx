@@ -2,7 +2,6 @@ import { Inter,IBM_Plex_Sans } from "next/font/google";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import SideBar from "./components/SideBar";
-import Footer from "./components/Footers/FooterLogout";
 import styles from "./layout.module.css"
 
 

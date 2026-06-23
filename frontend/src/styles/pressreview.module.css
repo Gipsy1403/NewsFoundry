@@ -57,6 +57,15 @@
 	font-size: var(--bodyxs);
 	cursor: pointer;
 }
+/* Boutons de copie : Copier */
+.btnCard:hover {
+	background-color: var(--color800);
+}
+.btnCard:disabled {
+	background-color: var(--color400);
+	color: var(--color700);
+	cursor: not-allowed;
+}
 .article{
 	display: flex;
 	flex-direction: column;
@@ -76,5 +85,19 @@
 
 }
 
+@media (max-width: 768px) {
+	.containerPress{
+	padding: 0.2rem;
 
+
+	}
+	.headerCard {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+	}
+	.btnCard {
+		align-self: center;
+	}
+}
 

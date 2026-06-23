@@ -12,18 +12,18 @@ import { useRouter } from "next/navigation";
 
 export default function Footer() {
 	const [message, setMessage] = useState("");
-	const { sendMessage } = useChat();
-	const router=useRouter();
-	const[inputFocus, setInputFocus]=useState(false);
+	const { sendMessage, loading } = useChat();
+	const router = useRouter();
+	const [inputFocus, setInputFocus] = useState(false);
 
 	async function handleSend() {
-		if (!message.trim()) return;
-		const content=message;
-		setMessage("");
-		sendMessage(message);
-		router.push("/chat")
+		if (!message.trim() || loading) return;
 
-		// Réinitialisation de l'input
+		const success = await sendMessage(message);
+		if (!success) return;
+
+		setMessage("");
+		router.push("/chat");
 	}
 
 	function handleKeyDown(e) {
@@ -64,8 +64,12 @@ export default function Footer() {
 				/>
 
 				<button
+					type="button"
 					className={`${styles.sendButton} ${inputFocus ? styles.sendButtonFocused : ""}`}
 					onClick={handleSend}
+					disabled={loading || !message.trim()}
+					aria-busy={loading}
+					aria-label={loading ? "Envoi en cours" : "Envoyer le message"}
 				>
 					<FontAwesomeIcon
 						icon={faPaperPlane}

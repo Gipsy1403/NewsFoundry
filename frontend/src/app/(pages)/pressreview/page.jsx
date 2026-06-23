@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 
 
 export default function PressReview() {
-	const { reviews, loading } = usePressReview();
+	const { reviews, loading, error } = usePressReview();
 
 	const [expandedId, setExpandedId] = useState(null);
 
@@ -74,6 +74,14 @@ export default function PressReview() {
 	);
 	}
 
+	if (error) {
+	return (
+		<div className={styles.empty} role="alert">
+			<p>{error}</p>
+		</div>
+	);
+	}
+
 	return (
 		<article className={styles.containerPress}>
 			<p className={styles.title}>Revues de Presse</p>
@@ -87,28 +95,26 @@ export default function PressReview() {
 					
 					{/* HEADER */}
 					<div className={styles.headerCard}>
-					<div>
-						<p className={styles.titleCard}>{buildReviewTitle(
-								review.subject,
-								review.created_at
-							)}</p>
-						{/* <p className={styles.titleCard}>{review.title}</p> */}
-
-						<div className={styles.dateCard}>
-						<FontAwesomeIcon
-						className={styles.iconCard}
-						icon={faCalendar}
-						/>
-						{formatDate(review.created_at)}
+						<div>
+							<p className={styles.titleCard}>{buildReviewTitle(
+									review.subject,
+									review.created_at
+								)}</p>
+							<div className={styles.dateCard}>
+							<FontAwesomeIcon
+							className={styles.iconCard}
+							icon={faCalendar}
+							/>
+							{formatDate(review.created_at)}
+							</div>
 						</div>
-					</div>
 
-					<button
-						className={styles.btnCard}
-						onClick={() => handleCopy(review)}
-					>
-						Copier
-					</button>
+						<button
+							className={styles.btnCard}
+							onClick={() => handleCopy(review)}
+						>
+							Copier
+						</button>
 					</div>
 
 					{/* CONTENT MARKDOWN */}
@@ -121,54 +127,5 @@ export default function PressReview() {
 			))}
 			</div>
 		</article>
-
-
-		// <article className={styles.containerPress} >
-		// 	<p className={styles.title}>Revues de Presse</p>
-		// 	<p className={styles.subTitle}>Consultez et gérez vos revues de presse générées par l'IA</p>
-		// 	<div>
-		// 		{reviews.map((review)=>{
-		// 			const isOpen=expandedId ===review.id;
-		// 			return (
-		// 				<div className={styles.card} key={review.id}>
-		// 					<div className={styles.headerCard}>
-		// 						<div>
-		// 							<p className={styles.titleCard}>{review.title}</p>
-		// 							<div className={styles.dateCard}>
-		// 								<FontAwesomeIcon className={styles.iconCard} icon={faCalendar} />{formatDate(review.created_at)}
-		// 							</div>
-		// 						</div>
-		// 						<button className={styles.btnCard} onClick={()=>handleCopy(review)}>Copier</button>
-		// 					</div>
-		// 					{review.article_summaries?.length > 0 && (
-		// 						<div className={styles.section}>
-		// 							<p className={styles.sectionLabel}>Articles ({review.article_summaries.length})</p>
-		// 							<div className={styles.articleList}>
-		// 							{review.article_summaries.map((article, idx) => (
-		// 								<div key={idx} className={styles.articleItem}>
-		// 									<p className={styles.articleTitle}>{article.article_title}</p>
-		// 									<p className={styles.articleSummary}>{article.summary}</p>
-		// 								</div>
-		// 							))}
-		// 							</div>
-		// 						</div>
-		// 					)}
-		// 						<ReactMarkdown>
-		// 						{review.global_summary}
-		// 						</ReactMarkdown>
-		// 					{/* <div className={styles.article}>
-		// 						<div className={styles.titleArticle}>
-		// 							<p className={styles.titlePress}>revue de presse</p>
-		// 							<p className={styles.datePress}>date</p>
-		// 						</div>
-		// 						<p >contenu</p>
-		// 					</div> */}
-		// 				</div>
-
-		// 			)
-		// 		})}
-
-		// 	</div>
-		// </article>
 	)
 }

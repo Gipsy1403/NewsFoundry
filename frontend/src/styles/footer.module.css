@@ -63,6 +63,14 @@
   cursor: pointer;
   color: var(--white);
 }
+/* Bouton footer : Envoyer */
+.sendButton:hover {
+  background-color: var(--dark);
+}
+.sendButton:disabled {
+  background-color: var(--color500);
+  cursor: not-allowed;
+}
 .sendButtonFocused {
   background-color: var(--header);
 }

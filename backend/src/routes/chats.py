@@ -32,13 +32,6 @@ def get_chats(
             status_code=500,
             detail="Erreur lors de la récupération des chats"
         )
-     #    chats = session.exec(
-     #        select(Chat).where(
-     #            Chat.user_id == user_id
-     #        )
-     #    ).all()
-
-     #    return chats
 
 # Récupère un chat spécifique de l'utilisateur connecté
 @router.get("/chats/{chat_id}")
@@ -73,24 +66,6 @@ def get_chat(
             detail="Erreur serveur lors de la récupération du chat"
         )
 
-
-     #    chat = session.get(Chat, chat_id)
-
-     #    # Vérifie que le chat existe
-     #    if not chat:
-     #        raise HTTPException(
-     #            status_code=404,
-     #            detail="Chat introuvable"
-     #        )
-
-     #    # Vérifie que le chat appartient au user connecté
-     #    if chat.user_id != user_id:
-     #        raise HTTPException(
-     #            status_code=403,
-     #            detail="Accès interdit"
-     #        )
-
-     #    return chat
 
 # Création d'un nouveau chat pour l'utilisateur connecté
 @router.post("/chats")
@@ -139,7 +114,6 @@ def send_message(
         # 2. vérifie la sécurité
         if chat.user_id != user_id:
             raise HTTPException(status_code=403, detail="Accès interdit")
-
         
         # 3. le message utilisateur est ajouté à l'historique
         user_message = {
@@ -151,7 +125,6 @@ def send_message(
         
         # 4. historique avant l'ajout du message courant sinon il serait dupliqué.
         history = build_history(chat.messages)
-     #    chat.messages = chat.messages + [user_message]
 
         # 5. Appel de l'agent
 
@@ -165,20 +138,15 @@ def send_message(
         assistant_message = {
             "role": "assistant",
             "content": result.output
-          #   "content": result.output
+
         }
         chat.messages.append(assistant_message)
-     #    chat.messages = chat.messages + [assistant_message]
         flag_modified(chat, "messages")
             
         # 7. sauvegarde en base
         session.add(chat)
-
-        
-
         session.commit()
         session.refresh(chat)
-
         
 	# 8.Retour dans le frontend
         return {

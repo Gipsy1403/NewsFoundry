@@ -20,16 +20,18 @@ export function ChatProvider({ children }) {
   const [chats, setChats] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // 📌 sidebar
   async function loadChats() {
     try {
-	// Récupère les conversations de l'utilisateur connecté
-      const data = await getChats();
+      setError("");
+	  const data = await getChats();
 
       setChats(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
+      setError("Impossible de charger les conversations.");
       setChats([]);
     }
   }
@@ -37,22 +39,27 @@ export function ChatProvider({ children }) {
   // Sélectionne une conversation précise
   async function selectChat(id) {
     try {
+      setError("");
       const data = await getChat(id);
 
       setChatId(id);
 
       // SAFE fallback important
       setMessages(Array.isArray(data?.messages) ? data.messages : []);
+      return true;
     } catch (err) {
       console.error(err);
+      setError("Impossible de charger cette conversation.");
       setMessages([]);
+      return false;
     }
   }
 
 //  Envoi du message à l'assistant
 async function sendMessage(message) {
-  if (!message?.trim()) return;
+  if (!message?.trim()) return false;
 
+  setError("");
   let currentChatId = chatId;
 
   if (!currentChatId) {
@@ -92,40 +99,48 @@ async function sendMessage(message) {
 
   } catch (err) {
     console.error(err);
+    setError("Impossible d'envoyer le message.");
+    return false;
   } finally {
     setLoading(false);
   }
+  return true;
 }
 
   // 📌 new chat
-const startNewChat = async () => {
-  try {
-    const newChat = await createChat();
+  const startNewChat = async () => {
+    try {
+      setError("");
+      const newChat = await createChat();
 
-    setChatId(newChat.id);
-
-    setMessages([]);
-     
-    // évite incohérences de cache UI
-    setChats((prev) => [newChat, ...prev]);
-
-//     await loadChats();
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-useEffect(() => {
-  const init = async () => {
-    const data = await getChats();
-
-    const safeChats = Array.isArray(data) ? data : [];
-
-    setChats(safeChats);
+      setChatId(newChat.id);
+      setMessages([]);
+      // évite incohérences de cache UI
+      setChats((prev) => [newChat, ...prev]);
+      return true;
+    } catch (err) {
+      console.error(err);
+      setError("Impossible de démarrer une nouvelle conversation.");
+      return false;
+    }
   };
 
-  init();
-}, []);
+  useEffect(() => {
+    const init = async () => {
+      try {
+        setError("");
+        const data = await getChats();
+        const safeChats = Array.isArray(data) ? data : [];
+        setChats(safeChats);
+      } catch (err) {
+        console.error(err);
+        setError("Impossible de charger les conversations.");
+        setChats([]);
+      }
+    };
+
+    init();
+  }, []);
 
 
   return (
@@ -135,6 +150,7 @@ useEffect(() => {
         messages,
         chats,
         loading,
+        error,
         sendMessage,
         selectChat,
         startNewChat,

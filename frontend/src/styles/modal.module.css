@@ -77,6 +77,15 @@
   font-size: var(--bodyxs);
   cursor: pointer;
 }
+/* Boutons modaux : Générer */
+.btn:hover {
+  background-color: var(--color800);
+}
+.btn:disabled {
+  background-color: var(--color400);
+  color: var(--color700);
+  cursor: not-allowed;
+}
 .loadingContent {
   display: flex;
   align-items: center;

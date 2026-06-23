@@ -39,13 +39,6 @@ class PressReview(SQLModel, table=True):
     subject: str
     # titre généré par l'agent
     title: str
-#     # synthèse générale du sujet
-#     global_summary: str
-#     # résumés par article : liste de {"article_title": ..., "summary": ...}
-#     article_summaries: List[Dict[str, Any]] = Field(
-#         sa_column=Column(JSON, nullable=False),
-#         default_factory=list
-#     )
     markdown_content:str
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
