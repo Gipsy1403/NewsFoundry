@@ -107,22 +107,12 @@ async function sendMessage(message) {
   return true;
 }
 
-  // 📌 new chat
-  const startNewChat = async () => {
-    try {
-      setError("");
-      const newChat = await createChat();
-
-      setChatId(newChat.id);
-      setMessages([]);
-      // évite incohérences de cache UI
-      setChats((prev) => [newChat, ...prev]);
-      return true;
-    } catch (err) {
-      console.error(err);
-      setError("Impossible de démarrer une nouvelle conversation.");
-      return false;
-    }
+  // new chat
+  const startNewChat = () => {
+    setError("");
+    setChatId(null);
+    setMessages([]);
+    return true;
   };
 
   useEffect(() => {

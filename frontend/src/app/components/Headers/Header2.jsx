@@ -38,7 +38,7 @@ export default function Header2({ drawerOpen, setDrawerOpen }) {
 					<div className={styles.discussion}>
 						<Link href="/home">
 							<button className={styles.iconDiscussion} 
-								aria-roledescription="Générer une nouvelle discussion"
+								aria-label="Générer une nouvelle discussion"
 								onClick={startNewChat}>
 								<FontAwesomeIcon icon={faArrowLeftLong} />
 							</button>

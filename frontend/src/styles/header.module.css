@@ -108,7 +108,7 @@
 
 .textConversation{
 	font-size: var(--bodyxs);
-	color: var(--color600);
+	color: var(--color800);
 }
 .btnDiscussion{
 	all:unset;
