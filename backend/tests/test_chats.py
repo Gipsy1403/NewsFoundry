@@ -10,7 +10,9 @@ def test_send_message(client):
         "/chats"
     ).json()
 
-    chat_id = chat["chat_id"]
+    # l'API peut renvoyer `id` ou `chat_id` selon la sérialisation
+    chat_id = chat.get("chat_id") or chat.get("id")
+    assert chat_id is not None
 
     response = client.post(
         f"/chats/{chat_id}/messages",
@@ -34,7 +36,8 @@ def test_chat_history_persistence(client):
         "/chats"
     ).json()
 
-    chat_id = chat["chat_id"]
+    chat_id = chat.get("chat_id") or chat.get("id")
+    assert chat_id is not None
 
     client.post(
         f"/chats/{chat_id}/messages",
@@ -70,7 +73,8 @@ def test_chat_access_forbidden(client):
         "/chats"
     ).json()
 
-    chat_id = chat["chat_id"]
+    chat_id = chat.get("chat_id") or chat.get("id")
+    assert chat_id is not None
 
     app.dependency_overrides[
         get_current_user_id

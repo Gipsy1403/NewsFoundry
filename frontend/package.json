@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test-backend": "cd ../backend && .venv\\Scripts\\python.exe -m pytest -q"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
