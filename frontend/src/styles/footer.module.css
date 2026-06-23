@@ -66,3 +66,11 @@
 .sendButtonFocused {
   background-color: var(--header);
 }
+
+@media (max-width: 767px) {
+  .footer { flex-direction: column; align-items: stretch; }
+  .logout { width: 100%; height: auto; padding: 12px; }
+  .inputBar { width: 100%; padding: 8px; }
+  .input { max-width: 100%; height: 48px; }
+  .sendButton { width: 44px; height: 44px; }
+}

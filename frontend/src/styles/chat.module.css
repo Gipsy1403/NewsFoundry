@@ -50,8 +50,8 @@
 
 /* Bulles */
 .assistantMessage, .userMessage {
-	max-width: 70%;
-	padding: 16px;
+	max-width: min(720px, 70%);
+	padding: clamp(8px, 1.5vw, 16px);
 	border-radius: 10px;
 }
 .assistantMessage:focus-visible,
@@ -75,4 +75,9 @@
 }
 .userMessage p{
 	color : var(--color300);
+}
+
+@media (max-width: 767px) {
+  .assistantMessage, .userMessage { max-width: 90%; }
+  .avatar { width: 40px; height: 40px; }
 }

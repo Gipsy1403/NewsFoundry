@@ -13,6 +13,52 @@
 	overflow: hidden;
 	
 }
+
+/* Hide sidebar on small screens to preserve main content area; will act as drawer later */
+@media (max-width: 767px) {
+	.sideBar {
+		display: none;
+	}
+	.sideBar.open {
+		display: flex;
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: min(320px, 80%);
+		max-width: 320px;
+		padding: 21px 16px;
+		background-color: var(--color100);
+		z-index: 100;
+		transform: translateX(0);
+		box-shadow: 2px 0 18px rgba(0, 0, 0, 0.16);
+		overflow-y: auto;
+		transition: transform 0.2s ease, opacity 0.2s ease;
+	}
+	.drawerBackdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.32);
+		z-index: 90;
+	}
+	.drawerHeader {
+		display: flex;
+		justify-content: flex-end;
+		padding-bottom: 12px;
+		border-bottom: 1px solid var(--color300);
+	}
+	.closeButton {
+		all: unset;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+		cursor: pointer;
+		background-color: var(--color200);
+	}
+}
 .chatListContainer {
 	flex: 1;              /* prend l’espace restant */
 	overflow-y: auto;     /* scroll vertical */

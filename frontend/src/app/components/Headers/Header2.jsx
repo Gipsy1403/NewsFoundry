@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons/faArrowLeftLong";
+import { faArrowLeftLong, faBars } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../../styles/header.module.css"
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
@@ -10,15 +10,23 @@ import Modal from "../Modal";
 import Link from "next/link";
 import { useChat } from "@/context/ChatContext";
 
-
-export default function Header2() {
+export default function Header2({ drawerOpen, setDrawerOpen }) {
 	const[openModal,setOpenModal]=useState(false)
 	const {startNewChat}= useChat();
+	const toggleDrawer = () => setDrawerOpen?.((prev) => !prev);
 
 	return (
 		<>
 			<header className={styles.header}>
 				<div className={styles.logoHeader}>
+					<button
+						className={styles.hamburger}
+						onClick={toggleDrawer}
+						aria-label={drawerOpen ? "Fermer le menu" : "Ouvrir le menu"}
+						aria-expanded={drawerOpen ? "true" : "false"}
+					>
+						<FontAwesomeIcon icon={faBars} />
+					</button>
 					<Image
 						className={styles.logo}
 						src="/IMGAppli/logo.png"
@@ -35,7 +43,6 @@ export default function Header2() {
 						</Link>
 						<div className={styles.text}>
 							<p className={styles.textDiscussion} onClick={startNewChat}>Nouvelle discussion</p>
-							{/* <button className={styles.textDiscussion} onClick={startNewChat}>Nouvelle discussion</button> */}
 							<p className={styles.textConversation}>Conversation active</p>
 						</div>
 					</div>
