@@ -4,11 +4,6 @@ from pydantic_ai.models.mistral import MistralModel
 from typing import List
 import os
 
-print(
-    "KEY FOUND:",
-    bool(os.getenv("MISTRAL_API_KEY"))
-)
-
 model = MistralModel("mistral-small")
 
 

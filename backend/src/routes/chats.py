@@ -160,9 +160,7 @@ def send_message(
            message_history=history,
            deps=chat.context
         )
-        print("TYPE RESULT",type(result))
-        print("RESULT",result)
-        print("DIR RESULT",dir(result))
+
         # 6. Récupération de la réponse de l'IA
         assistant_message = {
             "role": "assistant",
@@ -177,10 +175,10 @@ def send_message(
         session.add(chat)
 
         
-        print("Avant commit :", len(chat.messages))
+
         session.commit()
         session.refresh(chat)
-        print("Après commit :", len(chat.messages))
+
         
 	# 8.Retour dans le frontend
         return {

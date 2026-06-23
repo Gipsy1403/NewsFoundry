@@ -39,9 +39,20 @@ export default function Home() {
 				<p className={styles.text}>Connectez-vous pour accéder à votre assistant d'actualités IA</p>
 				<form className={styles.form} onSubmit={handleLogin}>
 					<label htmlFor="email">Adresse email</label>
-					<input className={styles.input} type="email" placeholder="votre.email@exemple.com" onChange={(e) => setEmail(e.target.value)}/>
+					<input className={styles.input} 
+						id="email" type="email" 
+						placeholder="votre.email@exemple.com" 
+						autoComplete="email" 
+						required 
+						onChange={(e) => setEmail(e.target.value)}/>
 					<label htmlFor="password">Mot de passe</label>
-					<input className={styles.input} placeholder="votre mot de passe" type="password" onChange={(e) => setPassword(e.target.value)}/>
+					<input className={styles.input} 
+						id="password" 
+						placeholder="votre mot de passe" 
+						type="password" 
+						autoComplete="current-password" 
+						required 
+						onChange={(e) => setPassword(e.target.value)}/>
 					<button type="submit" className={styles.btn}>Se connecter</button>
 				</form>
 			</div>

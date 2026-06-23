@@ -17,8 +17,7 @@ export function createChat() {
 }
 
 export function sendMessage(chatId, content) {
-	  console.log("sendMessage chatId =", chatId)
-	  console.log("message =", content)
+
 	if (!chatId) {
          throw new Error("chatId manquant dans sendMessage")
      }

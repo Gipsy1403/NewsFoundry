@@ -1,8 +1,15 @@
 /* =========================
    Press Review
 ========================= */
+.cardsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
 .containerPress{
 	padding: 2rem 3rem;
+	margin-bottom: 30px;
+
 }
 .title{
 	font-weight: 500;
@@ -48,6 +55,7 @@
 	padding: 3px 10px;
 	border-radius: 4px;
 	font-size: var(--bodyxs);
+	cursor: pointer;
 }
 .article{
 	display: flex;

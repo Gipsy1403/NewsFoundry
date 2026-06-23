@@ -57,6 +57,11 @@
 	font-size: var(--bodyxs);
 	color: var(--color100);
 }
+.input:focus-visible,
+.btn:focus-visible {
+	outline: 3px solid var(--header);
+	outline-offset: 2px;
+}
 
 
 

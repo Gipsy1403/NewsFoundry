@@ -4,11 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../../styles/header.module.css";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useChat } from "@/context/ChatContext";
 
 export default function Header1() {
 	const pathname=usePathname();
 	const isChat=pathname==="/home";
-	const isReviewPress=pathname==="/pressreview"
+	const isReviewPress=pathname==="/pressreview";
+	const {startNewChat}= useChat();
 
 	return (
 		<header className={styles.header}>
@@ -22,7 +24,7 @@ export default function Header1() {
 			</div>
 			<div className={styles.bar}>
 				<Link href="/home">
-					<button className={`${styles.btn} ${isChat ? styles.active : styles.disabled}`}>
+					<button className={`${styles.btn} ${isChat ? styles.active : styles.disabled}`} onClick={startNewChat}>
 						<FontAwesomeIcon className={styles.icon} icon={faComment} />
 						Chat
 					</button>

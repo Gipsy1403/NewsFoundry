@@ -11,11 +11,12 @@ import ReactMarkdown from "react-markdown";
 
 export default function PressReview() {
 	const { reviews, loading } = usePressReview();
-	  console.log("Reviews :", reviews);
+
 	const [expandedId, setExpandedId] = useState(null);
 
 	function formatDate(dateStr) {
-		const date=new Date(dateStr);
+		const date=new Date(`${dateStr}Z`);
+
 	return date.toLocaleDateString("fr-FR", {
 		weekday:"long",
 		day: "numeric",
@@ -23,6 +24,7 @@ export default function PressReview() {
 		year: "numeric",
 		hour:"2-digit",
 		minute:"2-digit",
+		timeZone:"Europe/Paris",
 	});
 	}
 
@@ -79,43 +81,43 @@ export default function PressReview() {
 			Consultez et gérez vos revues de presse générées par l'IA
 			</p>
 
-			<div>
+			<div className={styles.cardsContainer}>
 			{reviews.map((review) => (
-			<div className={styles.card} key={review.id}>
-				
-				{/* HEADER */}
-				<div className={styles.headerCard}>
-				<div>
-					<p className={styles.titleCard}>{buildReviewTitle(
-							review.subject,
-							review.created_at
-						)}</p>
-					{/* <p className={styles.titleCard}>{review.title}</p> */}
+				<div className={styles.card} key={review.id}>
+					
+					{/* HEADER */}
+					<div className={styles.headerCard}>
+					<div>
+						<p className={styles.titleCard}>{buildReviewTitle(
+								review.subject,
+								review.created_at
+							)}</p>
+						{/* <p className={styles.titleCard}>{review.title}</p> */}
 
-					<div className={styles.dateCard}>
-					<FontAwesomeIcon
-					className={styles.iconCard}
-					icon={faCalendar}
-					/>
-					{formatDate(review.created_at)}
+						<div className={styles.dateCard}>
+						<FontAwesomeIcon
+						className={styles.iconCard}
+						icon={faCalendar}
+						/>
+						{formatDate(review.created_at)}
+						</div>
+					</div>
+
+					<button
+						className={styles.btnCard}
+						onClick={() => handleCopy(review)}
+					>
+						Copier
+					</button>
+					</div>
+
+					{/* CONTENT MARKDOWN */}
+					<div className={styles.markdown}>
+						<ReactMarkdown>
+							{review.markdown_content}
+						</ReactMarkdown>
 					</div>
 				</div>
-
-				<button
-					className={styles.btnCard}
-					onClick={() => handleCopy(review)}
-				>
-					Copier
-				</button>
-				</div>
-
-				{/* CONTENT MARKDOWN */}
-				<div className={styles.markdown}>
-					<ReactMarkdown>
-						{review.markdown_content}
-					</ReactMarkdown>
-				</div>
-			</div>
 			))}
 			</div>
 		</article>

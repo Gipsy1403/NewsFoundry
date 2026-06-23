@@ -26,7 +26,7 @@ export function ChatProvider({ children }) {
     try {
 	// Récupère les conversations de l'utilisateur connecté
       const data = await getChats();
-	 console.log("CHATS :", data);
+
       setChats(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
@@ -79,8 +79,6 @@ async function sendMessage(message) {
     const data = await apiSendMessage(currentChatId, message);
     await loadChats();
 
-    console.log("API RESPONSE :", data);
-
     const assistantMessage = {
       role: "assistant",
       content: data.response,
@@ -91,21 +89,6 @@ async function sendMessage(message) {
     };
 
     setMessages((prev) => [...prev, assistantMessage]);
-//     const assistantMessage = data?.chat?.at(-1);
-
-//     if (assistantMessage) {
-//       setMessages((prev) => [
-//         ...prev,
-//         {
-//           role: assistantMessage.role,
-//           content: assistantMessage.content,
-//           time: new Date().toLocaleTimeString([], {
-//             hour: "2-digit",
-//             minute: "2-digit",
-//           }),
-//         },
-//       ]);
-//     }
 
   } catch (err) {
     console.error(err);
@@ -113,67 +96,6 @@ async function sendMessage(message) {
     setLoading(false);
   }
 }
-
-// async function sendMessage(message) {
-//   if (!message?.trim()) return;
-
-//   let currentChatId = chatId;
-
-//   // 🧠 CRÉATION AUTOMATIQUE DU CHAT SI INEXISTANT
-//   if (!currentChatId) {
-//     const newChat = await createChat();
-//     currentChatId = newChat.id;
-//     setChatId(currentChatId);
-//     setChats((prev) => [newChat, ...prev]);
-//   }
-
-//   // 🔥 message utilisateur optimiste (UI immédiate)
-//   const userMessage = {
-//     role: "user",
-//     content: message,
-//     time: new Date().toLocaleTimeString([], {
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     }),
-//   };
-
-//   setMessages((prev) => [...prev, userMessage]);
-
-//   try {
-//     setLoading(true);
-
-//     const data = await apiSendMessage(currentChatId, message);
-
-//     console.log("API RESPONSE :", data);
-
-//     const rawMessages =
-//       data?.chat || data?.messages || [];
-
-//     // 🧠 sécurisation + format
-//     const formattedMessages = Array.isArray(rawMessages)
-//       ? rawMessages.map((msg) => ({
-//           role: msg.role,
-//           content: msg.content,
-//           time:
-//             msg.time ||
-//             new Date().toLocaleTimeString([], {
-//               hour: "2-digit",
-//               minute: "2-digit",
-//             }),
-//         }))
-//       : [];
-
-//     setMessages((prev) => {
-//        const assistantMessage = formattedMessages[formattedMessages.length - 1];
-//        return [...prev, assistantMessage];
-//     });
-
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     setLoading(false);
-//   }
-// }
 
   // 📌 new chat
 const startNewChat = async () => {

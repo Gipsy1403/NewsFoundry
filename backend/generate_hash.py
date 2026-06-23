@@ -7,4 +7,4 @@ pwd_context = CryptContext(
 
 hash_password = pwd_context.hash("test")
 
-print(hash_password)
+# print(hash_password)

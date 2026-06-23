@@ -4,7 +4,9 @@ import Image from "next/image";
 export default function Home() {
 	return (
 		<>
-			<div className={styles.main}>
+			<div className={styles.main}
+				role="region"
+				aria-label="Ecran d'accueil du chat">
 				<div className={styles.content}>
 					<Image
 						className={styles.robot}

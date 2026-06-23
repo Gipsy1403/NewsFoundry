@@ -5,9 +5,8 @@ from sqlmodel import SQLModel, Session, create_engine, select
 from passlib.context import CryptContext
 
 DATABASE_URL = os.getenv("DATABASE_URL","sqlite:///test.db")
-print(os.getenv("DATABASE_URL"))
+
 engine = create_engine(DATABASE_URL, echo=True)
-print("DATABASE_URL =", engine.url)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

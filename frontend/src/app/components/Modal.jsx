@@ -12,11 +12,11 @@ export default function Modal({openModal, setOpenModal}) {
 	const [subject, setSubject] = useState("");
 	const { chatId } = useChat();
 	const { createPressReview, creating } = usePressReview();
-	console.log("CREATE PRESS REVIEW CALLED");
+
 	const router = useRouter();
 
 	async function handleSubmit(e) {
-		console.log("CLICK OK");
+
 		e.preventDefault();
 		if (!subject.trim()) {
 			toast.error("Veuillez saisir un thème.");
@@ -29,6 +29,11 @@ export default function Modal({openModal, setOpenModal}) {
 
 		try {
 			const review = await createPressReview(chatId, subject);
+
+			if (!review) {
+  				toast.error("La génération a échoué.");
+				return;
+			}
 
 			toast.success("Revue de presse générée !");
 			setOpenModal(false);
@@ -72,7 +77,16 @@ export default function Modal({openModal, setOpenModal}) {
 
 								/>
 							</div>
-							<button className={styles.btn}>Générer</button>
+							<button className={styles.btn} type="submit" disabled={creating}>
+								{creating ? (
+									<span className={styles.loadingContent}>
+										<span className={styles.spinner}></span>
+										Génération...
+									</span>
+								) : (
+								"Générer"
+								)}
+							</button>
 						</form>
 						<Dialog.Close asChild />
 					</Dialog.Content>
