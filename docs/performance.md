@@ -55,7 +55,7 @@ Outils possibles
 
 ### Réduction de la taille du contexte conversationnel
 
-- Problème : les performances dégradent lorsque le contexte devient long.
+- Problème : les performances se dégradent lorsque le contexte devient long.
 - Solution : appliquer une stratégie de troncature ou de résumé automatique.
 - Exemple : remplacer les anciens messages par un résumé textuel avant de les renvoyer au modèle.
 

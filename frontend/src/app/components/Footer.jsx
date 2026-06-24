@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../styles/footer.module.css";
 import { useChat } from "@/context/ChatContext";
 import { useRouter } from "next/navigation";
+import { logout } from "@/lib/api/auth";
 
 export default function Footer() {
 	const [message, setMessage] = useState("");
@@ -43,7 +44,11 @@ export default function Footer() {
 
 				<button
 					className={styles.btnLogout}
-				>
+					onClick={() => {
+						logout();
+						router.push("/login");
+					}}
+					>
 					Se déconnecter
 				</button>
 			</div>

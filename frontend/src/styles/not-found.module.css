@@ -1,0 +1,66 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.robotContainer {
+  margin-top: 3rem;
+  animation: rotateRobot 3s ease-in-out infinite;
+}
+
+.title {
+  margin-top: 1.5rem;
+  font-size: 5rem;
+  font-weight: 700;
+  color:var(--header);
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.description {
+  max-width: 500px;
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color:var(--color700);
+}
+
+.button {
+  margin-top: 2rem;
+  padding: 0.9rem 2rem;
+  background-color:var(--header);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: var(--dark);
+}
+
+/* Animation flottante */
+@keyframes rotateRobot {
+	0% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(-10deg);
+	}
+	75% {
+		transform: rotate(10deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}

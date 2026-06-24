@@ -6,9 +6,6 @@ from jose import jwt
 # from dotenv import load_dotenv
 import os
 
-# Charge les variables du fichier .env
-# load_dotenv()
-
 
 # Récupération des variables d'environnement
 SECRET_KEY = os.getenv("SECRET_KEY","test-secret-key")

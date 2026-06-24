@@ -16,13 +16,13 @@ export function ChatProvider({ children }) {
   const [chatId, setChatId] = useState(null);
   const [messages, setMessages] = useState([]);
 
-//   Liste des conversations disponibles
+  // Liste des conversations disponibles
   const [chats, setChats] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // 📌 sidebar
+  // sidebar
   async function loadChats() {
     try {
       setError("");

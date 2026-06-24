@@ -39,7 +39,7 @@ export default function Chat() {
 							className={styles.messageRowUser}
 						>
 							<div className={styles.userMessage}
-								ref={index===message.length-1 ? lastMessageRef:null}
+								ref={index===messages.length-1 ? lastMessageRef:null}
 								tabIndex={0}
 								aria-label={`Message utilisateur envoyé à ${message.time}`}>
 									{message.content}
