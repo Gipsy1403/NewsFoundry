@@ -20,15 +20,12 @@ class PressReviewOutput(BaseModel):
     title: str = Field(
         description="Titre global de la revue de presse"
     )
-#     markdown_content:str
     global_summary: str = Field(
         description="Synthèse globale de la revue de presse"
     )
-
     article_summaries: List[ArticleSummary] = Field(
         description="Synthèse des articles évoqués"
     )
-
     perspectives: str = Field(
         description="Analyse des tendances et perspectives"
     )

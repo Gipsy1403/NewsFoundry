@@ -10,10 +10,11 @@ from src.ai.news import (build_news_system_prompt, fetch_top_news)
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import SQLAlchemyError
 
-
 router = APIRouter()
 
+# -----------------------------------------------------------
 # Récupère tous les chats de l'utilisateur connecté
+
 @router.get("/chats")
 def get_chats(
     user_id: int = Depends(get_current_user_id),
@@ -33,7 +34,9 @@ def get_chats(
             detail="Erreur lors de la récupération des chats"
         )
 
+# -----------------------------------------------------------
 # Récupère un chat spécifique de l'utilisateur connecté
+
 @router.get("/chats/{chat_id}")
 def get_chat(
     chat_id: int,
@@ -66,8 +69,9 @@ def get_chat(
             detail="Erreur serveur lors de la récupération du chat"
         )
 
-
+# -------------------------------------------------
 # Création d'un nouveau chat pour l'utilisateur connecté
+
 @router.post("/chats")
 def create_chat(
 #   Vérifie que l'utilisateur est authentifié avant de créer un chat
@@ -97,7 +101,9 @@ def create_chat(
 class MessageRequest(BaseModel):
     content: str
 
+# ------------------------------------------------------
 # Gestion de la conversation avec l'IA
+
 @router.post("/chats/{chat_id}/messages")
 def send_message(
     chat_id: int,
@@ -127,7 +133,6 @@ def send_message(
         history = build_history(chat.messages)
 
         # 5. Appel de l'agent
-
         result=agent.run_sync(
            message.content,
            message_history=history,
@@ -151,7 +156,6 @@ def send_message(
 	# 8.Retour dans le frontend
         return {
             "response": result.output,
-          #   "response": result.output,
             "chat": chat.messages
         }
 

@@ -6,6 +6,8 @@ from src.ai.agent import agent
 WORLD_NEWS_API_KEY = os.getenv("WORLD_NEWS_API_KEY")
 WORLD_NEWS_API_URL = "https://api.worldnewsapi.com/top-news"
 
+# ---------------------------------------------------
+# Récupération des actualités du jour sur WorldNews API
 
 def fetch_top_news() -> list[dict]:
     """
@@ -65,6 +67,9 @@ def fetch_top_news() -> list[dict]:
     # Limiter le nombre d'articles
     return articles[:8]
 
+# --------------------------------------------------
+# Résume les actualités
+
 def summarize_news(articles: list[dict]) -> str:
     """
     Génère une synthèse des actualités afin d'obtenir un prompt plus court.
@@ -104,7 +109,8 @@ Actualités :
     return result.output.strip()
 # #     return result.output.strip()
 
-
+# ----------------------------------------------------------
+# Construit le prompt système complet qui sera envoyé à l'IA en y intégrant les actualités du jour et leur synthèse
 
 def build_news_system_prompt(articles: list[dict]) -> str:
     """

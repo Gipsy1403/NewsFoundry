@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      # 2.1 Cache pip packages to speed up CI
+      # 2.1 Mets les paquets pip en cache afin d'accélerer l'intégration continue
       - name: Cache pip
         uses: actions/cache@v4
         with:

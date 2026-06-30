@@ -109,3 +109,46 @@ Comment suivre
 - Le projet peut gagner en performance en optimisant le contexte IA, en introduisant du caching et en mesurant les temps de réponse.
 - L’expérience utilisateur s’améliore nettement avec du streaming et des retours visuels immédiats.
 - Un monitoring léger permet de suivre l’impact des changements et de garder le service stable.
+
+## 6. Évolution de l'architecture IA : intégration d'une RAG
+
+### Limite actuelle
+
+- La revue de presse est générée à partir de l'historique de la conversation et des articles récupérés pendant le chat.
+- Lorsque le nombre d'articles devient important, il n'est plus possible de transmettre l'ensemble des informations au modèle sans augmenter fortement la taille du contexte.
+- Cette limitation peut réduire la qualité de la synthèse lorsque de nombreuses sources sont disponibles.
+
+### Solution proposée
+
+Mettre en place une architecture **Retrieval-Augmented Generation (RAG)**.
+
+Le principe consiste à indexer les articles récupérés dans une base vectorielle. Avant chaque génération de revue de presse, une recherche sémantique sélectionne uniquement les documents les plus pertinents, qui sont ensuite injectés dans le prompt envoyé au modèle.
+
+### Exemple d'implémentation
+
+- Générer un embedding pour chaque article récupéré via WorldNewsAPI.
+- Stocker ces embeddings dans une base vectorielle, par exemple **pgvector** avec PostgreSQL ou **ChromaDB**.
+- Effectuer une recherche des articles les plus proches de la requête utilisateur.
+- Construire le prompt à partir des documents retrouvés plutôt qu'à partir de l'ensemble de l'historique.
+
+### Bénéfices attendus
+
+- amélioration de la pertinence des revues de presse ;
+- réduction du risque d'hallucination en s'appuyant sur des documents réels ;
+- possibilité de traiter un volume d'articles beaucoup plus important ;
+- diminution de la taille du contexte envoyé au modèle.
+
+### Mesures associées
+
+Mesures à suivre :
+
+- nombre moyen d'articles pris en compte pour une revue de presse ;
+- taille moyenne du contexte envoyé au modèle ;
+- temps moyen de génération d'une revue de presse ;
+- évaluation qualitative de la pertinence des synthèses lors de tests utilisateurs.
+
+Objectifs mesurables :
+
+- maintenir un temps de génération inférieur à 5 secondes ;
+- réduire la taille du contexte transmis tout en conservant la qualité des réponses ;
+- améliorer la couverture des informations disponibles lorsque plusieurs dizaines d'articles sont récupérés.
