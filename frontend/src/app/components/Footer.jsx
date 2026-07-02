@@ -59,6 +59,7 @@ export default function Footer() {
 
 				{/* INPUT CHAT */}
 				<div className={styles.inputBar}>
+					<label htmlFor="message" className="srOnly">Message à envoyer</label>
 					<input
 						className={`${styles.input} ${inputFocus ? styles.inputFocus : ""}`}
 						id="message"

@@ -68,7 +68,7 @@ export default function PressReview() {
 
 	if (loading) {
 	return (
-		<div className={styles.empty}>
+		<div className={styles.empty} role="status" aria-live="polite">
 		<p>Chargement...</p>
 		</div>
 	);
@@ -112,6 +112,7 @@ export default function PressReview() {
 						<button
 							className={styles.btnCard}
 							onClick={() => handleCopy(review)}
+							aria-label={`Copier la revue de presse ${buildReviewTitle(review.subject, review.created_at)}`}
 						>
 							Copier
 						</button>

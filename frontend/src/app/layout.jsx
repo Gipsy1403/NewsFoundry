@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html  lang="fr" >
 		<body suppressHydrationWarning className={`${inter.variable} ${ibmPlexSans.variable}`}>
+			<a href="#main-content" className="skipLink">Aller au contenu principal</a>
 			<Toaster position="top-center" toastOptions={{duration:3000}}/>
 			{children}
 		</body>

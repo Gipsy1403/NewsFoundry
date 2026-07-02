@@ -52,10 +52,11 @@
 .btnCard{
 	color: var(--white);
 	background-color: var(--dark);
-	padding: 3px 10px;
-	border-radius: 4px;
+	padding: 0.5rem 0.75rem;
+	border-radius: 0.5rem;
 	font-size: var(--bodyxs);
 	cursor: pointer;
+	min-height: 2.5rem;
 }
 /* Boutons de copie : Copier */
 .btnCard:hover {

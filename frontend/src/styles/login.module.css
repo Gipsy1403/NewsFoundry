@@ -30,7 +30,7 @@
 }
 .text{
 	font-size: var(--bodyxs);
-	color: var(--color800);
+	color: var(--dark);
 	text-align: center;
 	margin:1.5rem 0;
 }

@@ -38,6 +38,7 @@ export default function Header1({ drawerOpen, setDrawerOpen }) {
 					href="/home"
 					className={`${styles.btn} ${isChat ? styles.active : styles.disabled}`}
 					onClick={startNewChat}
+					aria-current={isChat ? "page" : undefined}
 				>
 					<FontAwesomeIcon className={styles.icon} icon={faComment} aria-hidden="true" />
 					Chat
@@ -45,6 +46,7 @@ export default function Header1({ drawerOpen, setDrawerOpen }) {
 				<Link
 					href="/pressreview"
 					className={`${styles.btn} ${isReviewPress ? styles.active : styles.disabled}`}
+					aria-current={isReviewPress ? "page" : undefined}
 				>
 					<FontAwesomeIcon className={styles.icon} icon={faFileLines} aria-hidden="true" />
 					Revue de presse

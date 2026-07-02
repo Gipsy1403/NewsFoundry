@@ -53,10 +53,13 @@
 }
 .btn{
 	all:unset;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	height:36px;
 	border-radius: 8px;
 	padding : 0px 10px;
-
+	text-decoration: none;
 }
 .active {
 	background-color: var(--header);
@@ -91,9 +94,13 @@
 .iconDiscussion{
 	font-size: 18px;
 	all: unset;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
 	padding: 8px;
 	border-radius: 12px;
+	text-decoration: none;
 }
 .iconDiscussion:hover{
 	background-color: var(--header);

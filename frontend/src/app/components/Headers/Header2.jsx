@@ -37,19 +37,20 @@ export default function Header2({ drawerOpen, setDrawerOpen }) {
 				</div>
 				<div className={styles.barDiscussion}>
 					<div className={styles.discussion}>
-						<Link href="/home">
-							<button className={styles.iconDiscussion} 
-								aria-label="Générer une nouvelle discussion"
-								onClick={startNewChat}>
-								<FontAwesomeIcon icon={faArrowLeftLong} />
-							</button>
+						<Link
+							href="/home"
+							className={styles.iconDiscussion}
+							aria-label="Générer une nouvelle discussion"
+							onClick={startNewChat}
+						>
+							<FontAwesomeIcon icon={faArrowLeftLong} aria-hidden="true" />
 						</Link>
 						<div className={styles.text}>
 							<p className={styles.textDiscussion}>Nouvelle discussion</p>
 							<p className={styles.textConversation}>Conversation active</p>
 						</div>
 					</div>
-					<button className={styles.btnDiscussion} onClick={() => setOpenModal(true)}>
+					<button className={styles.btnDiscussion} type="button" onClick={() => setOpenModal(true)}>
 						<FontAwesomeIcon className={styles.iconGenerate} icon={faFileLines} aria-hidden="true" />
 						Générer une revue de presse
 					</button>

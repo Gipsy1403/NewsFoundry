@@ -28,15 +28,15 @@ export default function Home() {
 	}
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.login}>
+		<main id="main-content" className={styles.container}>
+			<section className={styles.login} aria-labelledby="login-title">
 				<Image
 					className={styles.logo}
 					src="/IMGAppli/logo.png"
 					alt="NewsFoundry Logo"
 					width={195}
 					height={17} />
-				<h1 className={styles.text}>Connectez-vous pour accéder à votre assistant d'actualités IA</h1>
+				<h1 id="login-title" className={styles.text}>Connectez-vous pour accéder à votre assistant d'actualités IA</h1>
 				<form className={styles.form} onSubmit={handleLogin}>
 					<label htmlFor="email">Adresse email</label>
 					<input className={styles.input} 
@@ -55,7 +55,7 @@ export default function Home() {
 						onChange={(e) => setPassword(e.target.value)}/>
 					<button type="submit" className={styles.btn}>Se connecter</button>
 				</form>
-			</div>
-		</div>
+			</section>
+		</main>
 	)
 }

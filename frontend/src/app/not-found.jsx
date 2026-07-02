@@ -4,7 +4,7 @@ import styles from "../styles/not-found.module.css";
 
 export default function NotFound() {
 	return (
-		<main className={styles.container}>
+		<main id="main-content" className={styles.container}>
 			
 			{/* Image principale */}
 			<Image

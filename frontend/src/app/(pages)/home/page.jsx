@@ -3,18 +3,18 @@ import Image from "next/image";
 
 export default function Home() {
 	return (
-		<div className={styles.main}
+		<main id="main-content" className={styles.main}
 			role="region"
-			aria-label="Ecran d'accueil du chat"
+			aria-labelledby="home-title"
 			tabIndex={0}>
-			<div className={styles.content}>
+			<section className={styles.content}>
 				<Image
 					className={styles.robot}
 					src="/IMGAppli/animationRobot.png"
 					alt="Robot IA animé"
 					width={82}
 					height={67} />
-				<h1 className={styles.assistantTitle}>Assistant Revue de Press IA</h1>
+				<h1 id="home-title" className={styles.assistantTitle}>Assistant Revue de Press IA</h1>
 				<p className={styles.assistantText}>Posez-moi des questions sur l'actualité récente ou demandez-moi de générer une revue de presse sur un sujet spécifique.</p>
 				<div className={styles.examples}>
 					<p className={styles.examplesTitle}>Exemples :</p>
@@ -24,7 +24,7 @@ export default function Home() {
 						<li>"Résume l'actualité économique de la semaine"</li>
 					</ul>
 				</div>
-			</div>
-		</div>
+			</section>
+		</main>
 	)
 }

@@ -46,8 +46,8 @@ export default function Chat() {
 								<p className={styles.time}>{message.time}</p>
 							</div>
 
-							<Avatar.Root className={`${styles.avatar} ${styles.user}`}>
-								<FontAwesomeIcon className={styles.icon} icon={faUser}/>
+							<Avatar.Root className={`${styles.avatar} ${styles.user}`} aria-hidden="true">
+								<FontAwesomeIcon className={styles.icon} icon={faUser} aria-hidden="true"/>
 								<Avatar.Fallback className={styles.Fallback} delayMs={600}/>
 							</Avatar.Root>
 						</div>
@@ -56,8 +56,8 @@ export default function Chat() {
 							key={index}
 							className={styles.messageRowAssistant}
 						>
-							<Avatar.Root className={`${styles.avatar} ${styles.assistant}`}>
-								<Avatar.Image className={styles.image} src="/IMGAppli/robot.png"/>
+							<Avatar.Root className={`${styles.avatar} ${styles.assistant}`} aria-hidden="true">
+								<Avatar.Image className={styles.image} src="/IMGAppli/robot.png" alt=""/>
 								<Avatar.Fallback className={styles.Fallback} delayMs={600}/>
 							</Avatar.Root>
 
