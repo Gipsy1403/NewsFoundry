@@ -84,7 +84,7 @@ export default function PressReview() {
 
 	return (
 		<article className={styles.containerPress}>
-			<p className={styles.title}>Revues de Presse</p>
+			<h1 className={styles.title}>Revues de Presse</h1>
 			<p className={styles.subTitle}>
 			Consultez et gérez vos revues de presse générées par l'IA
 			</p>

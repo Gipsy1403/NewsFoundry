@@ -6,7 +6,8 @@ export default function Home() {
 		<>
 			<div className={styles.main}
 				role="region"
-				aria-label="Ecran d'accueil du chat">
+				aria-label="Ecran d'accueil du chat"
+				tabIndex={0}>
 				<div className={styles.content}>
 					<Image
 						className={styles.robot}
@@ -14,7 +15,7 @@ export default function Home() {
 						alt="Robot IA animé"
 						width={82}
 						height={67} />
-					<h1>Assistant Revue de Press IA</h1>
+					<h1 className={styles.assistantTitle}>Assistant Revue de Press IA</h1>
 					<p className={styles.assistantText}>Posez-moi des questions sur l'actualité récente ou demandez-moi de générer une revue de presse sur un sujet spécifique.</p>
 					<div className={styles.examples}>
 						<p className={styles.examplesTitle}>Exemples :</p>

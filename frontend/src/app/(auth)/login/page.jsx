@@ -36,7 +36,7 @@ export default function Home() {
 					alt="NewsFoundry Logo"
 					width={195}
 					height={17} />
-				<p className={styles.text}>Connectez-vous pour accéder à votre assistant d'actualités IA</p>
+				<h1 className={styles.text}>Connectez-vous pour accéder à votre assistant d'actualités IA</h1>
 				<form className={styles.form} onSubmit={handleLogin}>
 					<label htmlFor="email">Adresse email</label>
 					<input className={styles.input} 

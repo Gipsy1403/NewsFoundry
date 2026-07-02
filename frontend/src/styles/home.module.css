@@ -53,6 +53,13 @@
 }
 
 /* DESCRIPTION */
+.assistantTitle{
+  color: var(--header);
+  font-family: var(--font-ibm);
+  font-size: var(--headingl);
+  font-weight: 400;
+  line-height: 73px;
+}
 .assistantText {
   color: var(--color700);
   text-align: center;

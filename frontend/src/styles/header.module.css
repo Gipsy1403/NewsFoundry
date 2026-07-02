@@ -105,10 +105,12 @@
 	justify-content: start;
 	gap: 10px;
 }
-
+.textDiscussion{
+	color: var(--dark);
+}
 .textConversation{
 	font-size: var(--bodyxs);
-	color: var(--color800);
+	color: var(--dark);
 }
 .btnDiscussion{
 	all:unset;
