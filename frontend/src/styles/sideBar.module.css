@@ -80,11 +80,20 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: flex-start;
 	padding: 21px 24px;
 	height: 80px;
 	width: 100%;
+	border: 0;
 	border-bottom: 1px solid var(--color300);
+	background: transparent;
 	cursor: pointer;
+	text-align: left;
+}
+
+.chatItem:hover,
+.chatItem:focus-visible {
+	background-color: var(--color200);
 }
 
 .chatTitle {

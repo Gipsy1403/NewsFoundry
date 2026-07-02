@@ -37,10 +37,15 @@ export default function SideBar({ drawerOpen, setDrawerOpen }){
 				<div className={styles.chatListContainer}>
 					{visibleChats.map((chat)=>(
 					<div key={chat.id} className={styles.chatList}>
-						<div onClick={()=>handleClick(chat.id)} className={styles.chatItem}>
+						<button
+							type="button"
+							onClick={() => handleClick(chat.id)}
+							className={styles.chatItem}
+							aria-label={`Ouvrir la conversation du ${new Date(chat.created_at).toLocaleDateString("fr-FR")}`}
+						>
 							<p>Discusion du</p>
 							<p className={styles.dateChatList}>{new Date(chat.created_at).toLocaleDateString("fr-FR")}</p>
-							</div>
+						</button>
 						</div>
 					))}
 				</div>
