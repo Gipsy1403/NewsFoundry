@@ -68,4 +68,8 @@ p {
 
 }
 
+input, button{
+	font-family: var(--font-inter);
+
+}
 
