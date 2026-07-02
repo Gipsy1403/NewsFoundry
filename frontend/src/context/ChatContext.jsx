@@ -18,7 +18,7 @@ export function ChatProvider({ children }) {
 
   // Liste des conversations disponibles
   const [chats, setChats] = useState([]);
-
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

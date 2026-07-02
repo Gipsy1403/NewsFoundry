@@ -97,6 +97,8 @@ def create_chat(
 
     return chat
 
+
+
 # Structure attendue lorsqu'un utilisteur envoie un message
 class MessageRequest(BaseModel):
     content: str

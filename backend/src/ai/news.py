@@ -107,7 +107,7 @@ Actualités :
 
 
     return result.output.strip()
-# #     return result.output.strip()
+
 
 # ----------------------------------------------------------
 # Construit le prompt système complet qui sera envoyé à l'IA en y intégrant les actualités du jour et leur synthèse
