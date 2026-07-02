@@ -26,7 +26,7 @@ export default function SideBar({ drawerOpen, setDrawerOpen }){
 	return (
 		<>
 			{drawerOpen && <div className={styles.drawerBackdrop} onClick={closeDrawer} />}
-			<aside className={`${styles.sideBar} ${drawerOpen ? styles.open : ""}`}>
+			<aside id="sidebar-navigation" className={`${styles.sideBar} ${drawerOpen ? styles.open : ""}`} aria-label="Historique des conversations">
 				{drawerOpen && (
 					<div className={styles.drawerHeader}>
 						<button className={styles.closeButton} onClick={closeDrawer} aria-label="Fermer le menu">

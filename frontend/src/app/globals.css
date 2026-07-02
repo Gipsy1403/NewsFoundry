@@ -73,3 +73,16 @@ input, button{
 
 }
 
+a, button, input, textarea, select {
+	outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: 3px solid var(--header);
+	outline-offset: 2px;
+}
+

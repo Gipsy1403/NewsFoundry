@@ -43,6 +43,7 @@ export default function Footer() {
 				<div className={styles.logout}>
 					<FontAwesomeIcon
 						icon={faArrowRightFromBracket}
+						aria-hidden="true"
 					/>
 
 					<button
@@ -60,8 +61,10 @@ export default function Footer() {
 				<div className={styles.inputBar}>
 					<input
 						className={`${styles.input} ${inputFocus ? styles.inputFocus : ""}`}
+						id="message"
 						type="text"
 						placeholder="Tapez votre message ici..."
+						aria-label="Message à envoyer"
 						value={message}
 						onChange={(e) =>
 							setMessage(e.target.value)
@@ -81,6 +84,7 @@ export default function Footer() {
 					>
 						<FontAwesomeIcon
 							icon={faPaperPlane}
+							aria-hidden="true"
 						/>
 					</button>
 				</div>

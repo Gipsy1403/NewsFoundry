@@ -24,8 +24,9 @@ export default function Header2({ drawerOpen, setDrawerOpen }) {
 						onClick={toggleDrawer}
 						aria-label={drawerOpen ? "Fermer le menu" : "Ouvrir le menu"}
 						aria-expanded={drawerOpen ? "true" : "false"}
+						aria-controls="sidebar-navigation"
 					>
-						<FontAwesomeIcon icon={faBars} />
+						<FontAwesomeIcon icon={faBars} aria-hidden="true" />
 					</button>
 					<Image
 						className={styles.logo}
@@ -49,7 +50,7 @@ export default function Header2({ drawerOpen, setDrawerOpen }) {
 						</div>
 					</div>
 					<button className={styles.btnDiscussion} onClick={() => setOpenModal(true)}>
-						<FontAwesomeIcon className={styles.iconGenerate} icon={faFileLines} />
+						<FontAwesomeIcon className={styles.iconGenerate} icon={faFileLines} aria-hidden="true" />
 						Générer une revue de presse
 					</button>
 				</div>

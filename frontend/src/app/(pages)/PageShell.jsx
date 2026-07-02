@@ -19,7 +19,7 @@ export default function PageShell({ children }) {
           <HeaderDynamic drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
           <div className={styles.content}>
             <SideBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-            <main className={styles.main} onClick={closeDrawer}>
+            <main className={styles.main} onClick={closeDrawer} id="main-content">
               {children}
             </main>
           </div>

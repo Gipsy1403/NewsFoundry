@@ -55,11 +55,11 @@ export default function Modal({openModal, setOpenModal}) {
 				<Dialog.Overlay className={styles.overlay}/>
 				<Dialog.Portal>
 					<Dialog.Content className={styles.content}>
-						<button className={styles.closeButton} onClick={() => setOpenModal(false)}>
+						<button className={styles.closeButton} onClick={() => setOpenModal(false)} aria-label="Fermer la fenêtre de génération">
 							Fermer
 						</button>
 						<Dialog.Title className={styles.title}>Générer une revue de presse</Dialog.Title>
-						<p className={styles.subTitle}>Donner un titre à votre revue de presse</p>
+						<Dialog.Description className={styles.subTitle}>Donner un titre à votre revue de presse</Dialog.Description>
 						<form onSubmit={handleSubmit}>
 							<div className={styles.field}>
 								<label className={styles.label} htmlFor="subject">Thème de la revue de presse</label>

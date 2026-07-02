@@ -22,8 +22,9 @@ export default function Header1({ drawerOpen, setDrawerOpen }) {
 					onClick={toggleDrawer}
 					aria-label={drawerOpen ? "Fermer le menu" : "Ouvrir le menu"}
 					aria-expanded={drawerOpen ? "true" : "false"}
+					aria-controls="sidebar-navigation"
 				>
-					<FontAwesomeIcon icon={faBars} />
+					<FontAwesomeIcon icon={faBars} aria-hidden="true" />
 				</button>
 				<Image
 					className={styles.logo}
@@ -32,20 +33,23 @@ export default function Header1({ drawerOpen, setDrawerOpen }) {
 					width={148}
 					height={15} />
 			</div>
-			<div className={styles.bar}>
-				<Link href="/home">
-					<button className={`${styles.btn} ${isChat ? styles.active : styles.disabled}`} onClick={startNewChat}>
-						<FontAwesomeIcon className={styles.icon} icon={faComment} />
-						Chat
-					</button>
+			<nav className={styles.bar} aria-label="Navigation principale">
+				<Link
+					href="/home"
+					className={`${styles.btn} ${isChat ? styles.active : styles.disabled}`}
+					onClick={startNewChat}
+				>
+					<FontAwesomeIcon className={styles.icon} icon={faComment} aria-hidden="true" />
+					Chat
 				</Link>
-				<Link href="/pressreview">
-					<button className={`${styles.btn} ${isReviewPress ? styles.active : styles.disabled}`}>
-						<FontAwesomeIcon className={styles.icon} icon={faFileLines} />
-						Revue de presse
-					</button>
+				<Link
+					href="/pressreview"
+					className={`${styles.btn} ${isReviewPress ? styles.active : styles.disabled}`}
+				>
+					<FontAwesomeIcon className={styles.icon} icon={faFileLines} aria-hidden="true" />
+					Revue de presse
 				</Link>
-			</div>
+			</nav>
 		</header>
 	)
 }
