@@ -18,7 +18,7 @@ cd backend
 uv sync
 ```
 
-4. Installer les dépendances frontend depuis `frontend/` si nécessaire via npm ou yarn (selon l’environnement) :
+4. Installer les dépendances frontend depuis `frontend/` :
 
 ```bash
 cd frontend

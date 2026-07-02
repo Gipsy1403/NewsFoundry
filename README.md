@@ -20,8 +20,8 @@
 ## Installation
 
 1. Cloner le repository
-2. Démarrer le backend aved les instructions du fichier `backend/README.md`
-3. Initialiser un projet Next.js dans un dossier `frontend/`
+2. Démarrer le backend avec les instructions du fichier `backend/README.md`
+3. Installer et lancer le frontend depuis le dossier `frontend/`
 
 ## Choix technologiques
 

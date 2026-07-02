@@ -27,7 +27,9 @@
 - `frontend/src/app/(pages)/PageShell.jsx` : shell client chargé de l’état du drawer mobile.
 - `frontend/src/app/components/` : composants réutilisables de l’interface.
 - `frontend/src/app/components/Headers/` : en-têtes et navigation.
-- `frontend/src/app/components/Footers/` : composants de pied de page.
+- `frontend/src/app/components/Footer.jsx` : composant de pied de page.
+- `frontend/src/app/components/Modal.jsx` : composant modal générique.
+- `frontend/src/app/components/SideBar.jsx` : composant de barre latérale.
 - `frontend/src/app/(pages)/chat/`, `home/`, `pressreview/` : pages principales de l’application.
 - `frontend/src/context/` : contexte React pour partager l’état chat et revue de presse.
 - `frontend/src/lib/api/` : services d’appel aux API backend.

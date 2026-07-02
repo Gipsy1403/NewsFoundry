@@ -2,8 +2,8 @@
 
 ## Frontend
 
-- **Next.js** avec App Router pour organiser les pages et le routage.
-- **React 19** pour construire les interfaces.
+- **Next.js 16.2.6** avec App Router pour organiser les pages et le routage.
+- **React 19.2.4** pour construire les interfaces.
 - **CSS Modules** pour isoler les styles au niveau des composants.
 - **FontAwesome** pour les icônes.
 - **Radix UI** pour des composants accessibles, comme les avatars et les dialogues.

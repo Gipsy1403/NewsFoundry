@@ -104,12 +104,6 @@ Comment suivre
 - Visualiser l’évolution des latences et des coûts.
 - Prendre des décisions basées sur des seuils : par exemple, alerter si le temps de réponse dépasse 5 secondes.
 
-## Conclusion
-
-- Le projet peut gagner en performance en optimisant le contexte IA, en introduisant du caching et en mesurant les temps de réponse.
-- L’expérience utilisateur s’améliore nettement avec du streaming et des retours visuels immédiats.
-- Un monitoring léger permet de suivre l’impact des changements et de garder le service stable.
-
 ## 6. Évolution de l'architecture IA : intégration d'une RAG
 
 ### Limite actuelle
@@ -138,17 +132,8 @@ Le principe consiste à indexer les articles récupérés dans une base vectorie
 - possibilité de traiter un volume d'articles beaucoup plus important ;
 - diminution de la taille du contexte envoyé au modèle.
 
-### Mesures associées
+## Conclusion
 
-Mesures à suivre :
-
-- nombre moyen d'articles pris en compte pour une revue de presse ;
-- taille moyenne du contexte envoyé au modèle ;
-- temps moyen de génération d'une revue de presse ;
-- évaluation qualitative de la pertinence des synthèses lors de tests utilisateurs.
-
-Objectifs mesurables :
-
-- maintenir un temps de génération inférieur à 5 secondes ;
-- réduire la taille du contexte transmis tout en conservant la qualité des réponses ;
-- améliorer la couverture des informations disponibles lorsque plusieurs dizaines d'articles sont récupérés.
+- Le projet peut gagner en performance en optimisant le contexte IA, en introduisant du caching et en mesurant les temps de réponse.
+- L’expérience utilisateur s’améliore nettement avec du streaming et des retours visuels immédiats.
+- Un monitoring léger permet de suivre l’impact des changements et de garder le service stable.

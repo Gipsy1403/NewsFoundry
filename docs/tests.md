@@ -27,4 +27,5 @@ cd backend
 ## Notes
 
 - Le script `test-backend` du frontend lance directement les tests backend en référençant l’environnement Python virtuel du backend.
+- Vérifiez que le backend a bien ses dépendances installées (`cd backend && uv sync`) et que `.venv` existe avant d’exécuter les tests.
 - Les tests sont situés dans `backend/tests/`.
