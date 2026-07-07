@@ -2,7 +2,9 @@ import pytest
 from src.routes.auth import login, LoginRequest, pwd_context
 from src.models import User
 
+# TEST FONCION LOGIN
 
+# test de la fonction login() avec des identifiants valides
 def test_login_success(session):
     # Création d'un utilisateur en base
     user = User(email="u@test.com", hashed_password=pwd_context.hash("secret"))
@@ -15,7 +17,7 @@ def test_login_success(session):
     assert "access_token" in resp
     assert resp["token_type"] == "bearer"
 
-
+# test de la fonction login() avec des identifiants invalides
 def test_login_invalid_credentials(session):
     data = LoginRequest(email="nope@test.com", password="x")
     with pytest.raises(Exception):

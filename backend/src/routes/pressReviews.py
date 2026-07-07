@@ -97,7 +97,7 @@ Analyse toute la conversation et construis une revue de presse structurée.
 """.strip()
 
     # -------------------------
-    # 5. DB save
+    # 5. Sauvegarde en base de données
     # -------------------------
     press_review = PressReview(
         chat_id=chat.id,
@@ -113,43 +113,43 @@ Analyse toute la conversation et construis une revue de presse structurée.
     return press_review
 
 
-# Liste toutes les revues de presse de l'utilisateur connecté (toutes discussions confondues) (Page/review)
-@router.get("/press-reviews")
-def list_press_reviews(
-    user_id: int = Depends(get_current_user_id),
-    session: Session = Depends(get_session),
-):
-    chat_ids = session.exec(
-        select(Chat.id).where(Chat.user_id == user_id)
-    ).all()
+# # Liste toutes les revues de presse de l'utilisateur connecté (toutes discussions confondues) (Page/review)
+# @router.get("/press-reviews")
+# def list_press_reviews(
+#     user_id: int = Depends(get_current_user_id),
+#     session: Session = Depends(get_session),
+# ):
+#     chat_ids = session.exec(
+#         select(Chat.id).where(Chat.user_id == user_id)
+#     ).all()
 
-    if not chat_ids:
-        return []
+#     if not chat_ids:
+#         return []
 
-    reviews = session.exec(
-        select(PressReview)
-        .where(PressReview.chat_id.in_(chat_ids))
-        .order_by(PressReview.created_at.desc())
-    ).all()
+#     reviews = session.exec(
+#         select(PressReview)
+#         .where(PressReview.chat_id.in_(chat_ids))
+#         .order_by(PressReview.created_at.desc())
+#     ).all()
 
-    return reviews
+#     return reviews
 
 
-# Détail d'une revue de presse spécifique
-@router.get("/press-reviews/{review_id}")
-def get_press_review(
-    review_id: int,
-    user_id: int = Depends(get_current_user_id),
-    session: Session = Depends(get_session),
-):
-    review = session.get(PressReview, review_id)
+# # Détail d'une revue de presse spécifique
+# @router.get("/press-reviews/{review_id}")
+# def get_press_review(
+#     review_id: int,
+#     user_id: int = Depends(get_current_user_id),
+#     session: Session = Depends(get_session),
+# ):
+#     review = session.get(PressReview, review_id)
 
-    if not review:
-        raise HTTPException(status_code=404, detail="Revue introuvable")
+#     if not review:
+#         raise HTTPException(status_code=404, detail="Revue introuvable")
 
-    chat = session.get(Chat, review.chat_id)
+#     chat = session.get(Chat, review.chat_id)
 
-    if not chat or chat.user_id != user_id:
-        raise HTTPException(status_code=403, detail="Accès interdit")
+#     if not chat or chat.user_id != user_id:
+#         raise HTTPException(status_code=403, detail="Accès interdit")
 
-    return review
+#     return review

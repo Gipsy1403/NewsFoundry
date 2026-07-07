@@ -44,6 +44,7 @@ def add_chat_context(ctx: RunContext[str]) -> str:
     """
     return ctx.deps or ""
 
+
 @agent.tool_plain
 def search_news(
     query: str,

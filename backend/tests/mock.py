@@ -6,7 +6,7 @@ from pydantic_ai.models.test import TestModel
 
 
 # =========================
-# MOCK LLM
+# TEST LLM
 # =========================
 class FakeResult:
     def __init__(self, output):
@@ -23,25 +23,25 @@ def mock_llm(monkeypatch):
 
 
 # =========================
-# TEST CHAT MESSAGE
+# Teste l'envoi d'un message dans une conversation
 # =========================
 def test_send_message(client):
-
+#     remplace le vrai modèle d'IA par TestModel() pour simuler les réponses de l'IA
     with agent.override(
         model=TestModel()
     ):
-
+     #    crée une nouvelle conversation via l'API FastAPI
         chat = client.post("/chats").json()
 
         chat_id = chat["chat_id"]
-
+     #    envoie un message dans cette conversation
         response = client.post(
             f"/chats/{chat_id}/messages",
             json={
                 "content": "Bonjour"
             }
         )
-
+     #    Vérifie que la requête est correcte (code HTTP 200)
         assert response.status_code == 200
 
 # =========================
@@ -69,7 +69,7 @@ def test_chat_history_persistence(client):
 
 
 # =========================
-# TEST SÉCURITÉ
+# Test pour vérifier qu'un utilisateur ne peut pas accéder à une conversation qui ne lui appartient pas
 # =========================
 def override_user_1():
     return 1
@@ -80,13 +80,17 @@ def override_user_2():
 
 
 def test_chat_access_forbidden(client):
+    app.dependency_overrides[get_current_user_id] = override_user_1
+#     crée une conversation pour l'utilisateur 1
     chat = client.post("/chats").json()
+
     chat_id = chat["chat_id"]
 
     app.dependency_overrides[get_current_user_id] = override_user_2
-
+#   essaie d'accéder à la conversation de l'utilisateur 1 avec l'utilisateur 2
     response = client.get(f"/chats/{chat_id}")
 
     assert response.status_code == 403
 
-    app.dependency_overrides = {}
+    app.dependency_overrides.clear()
+#     app.dependency_overrides = {}

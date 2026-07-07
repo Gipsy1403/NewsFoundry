@@ -7,7 +7,7 @@ from jose import jwt
 import os
 
 
-# Récupération des variables d'environnement
+# Récupération des variables d'environnement pour les TESTS
 SECRET_KEY = os.getenv("SECRET_KEY","test-secret-key")
 ALGORITHM = os.getenv("ALGORITHM","HS256")
 

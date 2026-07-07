@@ -60,7 +60,6 @@ def fetch_top_news() -> list[dict]:
                     {
                         "title": title,
                         "summary": summary.strip(),
-                    #     "keywords": title.lower() + " " + summary.lower()
                     }
                 )
 
@@ -117,7 +116,7 @@ def build_news_system_prompt(articles: list[dict]) -> str:
     Construit le prompt système complet : base fixe + actualités du jour
     Appelé une seule fois à la création du chat, résultat sauvegardé en BDD.
     
-    En cas d'erreur (API down, quota dépassé, clé manquante), on dégrade proprement : le chat fonctionne avec le prompt de base sans les news
+    En cas d'erreur, on dégrade proprement : le chat fonctionne avec le prompt de base sans les news
 
     """
 

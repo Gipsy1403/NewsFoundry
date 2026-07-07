@@ -3,12 +3,12 @@ import sys
 import os
 import pytest
 
-# Ensure backend (project) is on sys.path so `src` is importable when pytest
+# Ajouter le répertoire racine du projet au sys.path pour que les imports fonctionnent correctement
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT))
 
-os.environ.setdefault("MISTRAL_API_KEY", "test-key")
 # Définir ici les variables utilisées au moment de l'import des modules
+os.environ.setdefault("MISTRAL_API_KEY", "test-key")
 os.environ.setdefault("SECRET_KEY", "test-secret-key")
 os.environ.setdefault("ALGORITHM", "HS256")
 os.environ.setdefault("ACCESS_TOKEN_EXPIRE_MINUTES", "60")
@@ -42,21 +42,23 @@ def default_env(monkeypatch):
     monkeypatch.setenv("SECRET_KEY", "test-secret-key")
     monkeypatch.setenv("ALGORITHM", "HS256")
     monkeypatch.setenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60")
-    # Empêcher les appels réseau depuis `src.ai.news` en mockant requests.get
+
+    # Empêche un appel à une véritable API pour les tests
     try:
         import src.ai.news as ai_news
-
+	#  faux objet de réponse pour simuler la requests.get() dans le module ai_news
         class FakeResp:
+          # simule la méthode raise_for_status() de l'objet Response de requests
             def raise_for_status(self):
                 return None
-
+          # Renvoie une réponse JSON vide
             def json(self):
                 return {"top_news": []}
-
+     #  Remplace la fonction requests.get() par une lambda qui renvoie FakeResp()
         monkeypatch.setattr(ai_news.requests, "get", lambda *args, **kwargs: FakeResp())
     except Exception:
         pass
-
+    # Lance le test. Après le test, pytest restaurera automatiquement requests.get() à sa valeur d'origine
     yield
 
 
@@ -69,7 +71,7 @@ def test_model():
 
 
 # ==========================
-# Base SQLite mémoire
+# Base SQLite 
 # ==========================
 
 TEST_DATABASE_URL = "sqlite://"
@@ -80,22 +82,24 @@ engine = create_engine(
     poolclass=StaticPool,
 )
 
-
+# Toutes les routes FastAPI utiliseront cette BdD de test au lieu de la vraie base de données
 def override_get_session():
+   # ouvre une session sur la base de test
     with Session(engine) as session:
+     #    donne la session à FastAPI pour qu'elle l'utilise dans les routes
         yield session
 
-
+# fournit une session de BDD directement aux fonctions de test
 @pytest.fixture
 def session():
     with Session(engine) as s:
         yield s
 
-
+# simule un utilisateur connecté
 def override_get_user_id():
     return 1
 
-
+# prépare la base de test avant chaque session de tests et la supprime après
 @pytest.fixture(scope="session", autouse=True)
 def setup_db():
     SQLModel.metadata.create_all(engine)
@@ -104,16 +108,13 @@ def setup_db():
         user = User(email="test@test.com", hashed_password=pwd_context.hash("test"))
         session.add(user)
         session.commit()
-
     yield
-
     SQLModel.metadata.drop_all(engine)
 
-
+# crée un client FastAPI pour simuler des requêtes HTTP dans les tests. Les routes FastAPI utiliseront la base de test et l'utilisateur simulé
 @pytest.fixture
 def client():
     app.dependency_overrides[get_session] = override_get_session
-    # Importer la dépendance ici afin qu'elle prenne en compte les env vars
     from src.auth.dependencies import get_current_user_id
     app.dependency_overrides[get_current_user_id] = override_get_user_id
 

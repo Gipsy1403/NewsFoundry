@@ -1,6 +1,4 @@
 from types import SimpleNamespace
-import pytest
-from datetime import datetime
 
 from src.routes.pressReviews import create_press_review, PressReviewRequest
 from src.models import Chat

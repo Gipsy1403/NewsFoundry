@@ -12,7 +12,7 @@ def fetch_world_news(query: str, max_results: int = 5) -> list[dict]:
     """
     if not WORLD_NEWS_API_KEY: return []
 
-    max_results = max(1, min(max_results, 10))  # borne 1-10
+    max_results = max(1, min(max_results, 10))
 
     params = {
         "api-key": WORLD_NEWS_API_KEY,

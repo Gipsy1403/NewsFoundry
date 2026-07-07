@@ -43,7 +43,7 @@ docker run \
 
 ```bash
 cd backend
-uv run --env-file .env src/main.py
+uv run --env-file .env -m src/main
 ```
 
 ## Lancer le frontend

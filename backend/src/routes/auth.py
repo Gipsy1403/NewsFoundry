@@ -18,6 +18,7 @@ class LoginRequest(BaseModel):
     email: str
     password: str
 
+# Route pour obtenir les informations de l'utilisateur connecté pour les TESTS
 @router.get("/me")
 def me(
     user_id: int = Depends(get_current_user_id)
@@ -26,6 +27,7 @@ def me(
         "user_id": user_id
     }
 
+# Route pour l'authentification et la génération d'un JWT
 @router.post("/login")
 def login(data: LoginRequest, session: Session = Depends(get_session)):
     """

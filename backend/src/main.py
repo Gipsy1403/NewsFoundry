@@ -15,7 +15,6 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-     #    "https://newsfoundry.vercel.app",
         "https://news-foundry-delta.vercel.app"
     ],
     allow_credentials=True,
@@ -31,7 +30,10 @@ app.include_router(press_reviews_router)
 async def hello():
     return {"message": "👋"}
 
-
+# Exécute l'initialisation de la base de données
+# uniquement si ce fichier est lancé directement.
+# Si ce fichier est importé dans un autre module,
+# ce code ne sera pas exécuté.
 if __name__ == "__main__":
     init_db()
 

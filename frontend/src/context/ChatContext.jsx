@@ -44,7 +44,7 @@ export function ChatProvider({ children }) {
 
       setChatId(id);
 
-      // SAFE fallback important
+      // fallback
       setMessages(Array.isArray(data?.messages) ? data.messages : []);
       return true;
     } catch (err) {
@@ -55,7 +55,7 @@ export function ChatProvider({ children }) {
     }
   }
 
-//  Envoi du message à l'assistant
+//  Message envoyé à l'assistant
 async function sendMessage(message) {
   if (!message?.trim()) return false;
 

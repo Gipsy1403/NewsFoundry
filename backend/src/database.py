@@ -9,8 +9,17 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 def get_session():
+    # Ouvre une session de connexion à la base de données.
+    # La session sera utilisée par les routes FastAPI
+    # pour lire, ajouter, modifier ou supprimer des données.
+    # Grâce au mot-clé "with", la session sera fermée
+    # automatiquement à la fin de son utilisation.
     with Session(engine) as session:
+        # "yield" prête la session à FastAPI.
+        # La route qui utilise Depends(get_session)
+        # reçoit cette session dans un paramètre.
         yield session
         
 
