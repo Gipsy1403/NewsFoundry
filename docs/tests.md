@@ -14,7 +14,7 @@ ou directement depuis le backend :
 ```bash
 cd backend
 .venv\Scripts\activate
-python -m pytest -q
+pytest -q
 ```
 
 ## Ce que testent les tests
