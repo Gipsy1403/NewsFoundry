@@ -39,8 +39,90 @@
 - Les tests sont exécutables depuis le dossier `backend/`.
 - Le frontend contient un script `test-backend` qui déclenche les tests backend depuis `frontend/package.json`.
 
-## Déploiement
+## Déploiement en production
 
-- Le backend est prévu pour être packagé avec un **Dockerfile**.
-- Le frontend est conçu pour être déployé principalement sur **Vercel**.
-- Le backend peut être déployé sur des plateformes comme **Railway**.
+L'application est prévue pour être déployée avec trois services principaux.
+|-----------------------------|--------------|----------------------------------------------------------------|
+| Élément				 	| Plateforme 	| Rôle 												|
+|-----------------------------|--------------|----------------------------------------------------------------|
+| Backend FastAPI 			| Railway		| Héberger l'API REST et la logique IA. 					|
+| Base de données PostgreSQL 	| Railway 	| Stocker les utilisateurs, chats, messages et revues de presse. |
+| Frontend Next.js 			| Vercel 		| Héberger l'interface utilisateur. 						|
+|-----------------------------|--------------|----------------------------------------------------------------|
+
+### URL de production
+
+```text
+URL frontend Vercel : https://news-foundry-delta.vercel.app
+```
+
+
+### Variables d'environnement backend
+
+Le backend nécessite notamment :
+
+```text
+DATABASE_URL=<url_postgresql_railway>
+SECRET_KEY=<clé_secrète_jwt>
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+MISTRAL_API_KEY=<clé_api_mistral>
+WORLD_NEWS_API_KEY=<clé_api_worldnewsapi>
+```
+
+Ces variables doivent être configurées dans Railway.
+
+### Variables d'environnement frontend
+
+Le frontend doit connaître l'URL du backend déployé.
+
+```text
+NEXT_PUBLIC_API_URL=https://newsfoundry-production-55cc.up.railway.app
+```
+
+Cette variable doit être configurée dans Vercel.
+
+## Déploiement automatique
+
+Le projet utilise un déploiement automatique à partir de la branche `main`.
+
+### Frontend sur Vercel
+
+Vercel est relié au repository GitHub.
+À chaque nouveau commit sur la branche `main` :
+
+1. Vercel détecte le changement ;
+2. Vercel lance le build du frontend ;
+3. Vercel publie automatiquement la nouvelle version.
+
+### Backend sur Railway
+
+Railway est relié au repository GitHub.
+À chaque nouveau commit sur la branche `main` :
+
+1. Railway détecte le changement ;
+2. Railway reconstruit le service backend ;
+3. Railway redéploie l'API automatiquement.
+
+### Base de données sur Railway
+
+La base PostgreSQL est hébergée dans Railway.
+Le backend utilise la variable `DATABASE_URL` pour se connecter à cette base.
+
+## Intégration continue avec GitHub Actions
+
+Les tests backend sont automatisés avec GitHub Actions.
+
+Le fichier à créer est :
+
+```text
+.github/workflows/backend-tests.yml
+```
+
+Cette action lance les tests automatiquement :
+
+- à chaque push sur `main` ;
+- à chaque pull request vers `main`.
+
+Elle vérifie donc que les tests backend passent avant validation du code.
+

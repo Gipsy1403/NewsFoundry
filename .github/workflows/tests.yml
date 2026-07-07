@@ -50,6 +50,7 @@ jobs:
           pytest -v tests
 
       - name: Show bcrypt & passlib versions
+        if: always()
         run: |
           python -m pip show bcrypt || true
           python -m pip show passlib || true
