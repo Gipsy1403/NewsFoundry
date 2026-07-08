@@ -1,12 +1,13 @@
 
-## Justification des choix de prompts
+# Justification des choix de prompts
 
 Le projet utilise deux agents IA principaux :
 
 - un agent conversationnel pour répondre aux questions d'actualité ;
 - un agent spécialisé pour générer une revue de presse structurée.
 
-### Prompt de l'agent conversationnel
+
+## Prompt de l'agent conversationnel
 
 L'agent conversationnel est configuré comme un assistant spécialisé dans l'analyse et la synthèse d'actualités.
 
@@ -25,7 +26,8 @@ Objectif :
 - guider le modèle vers une réponse factuelle ;
 - utiliser les données récupérées par WorldNewsAPI comme source de contexte.
 
-### Prompt de contexte au moment de la création d'un chat
+
+## Prompt de contexte au moment de la création d'un chat
 
 Lorsqu'un nouveau chat est créé, le backend récupère des actualités récentes et construit un contexte initial.
 
@@ -42,7 +44,8 @@ Objectif :
 - conserver une base d'information commune pendant toute la discussion ;
 - réduire le risque d'hallucination.
 
-### Prompt de génération de revue de presse
+
+## Prompt de génération de revue de presse
 
 L'agent de revue de presse reçoit une consigne spécifique : analyser toute la conversation et produire une revue structurée.
 
@@ -63,7 +66,15 @@ Objectif :
 - faciliter l'affichage dans le frontend ;
 - éviter que le modèle ajoute des informations non présentes dans la conversation.
 
-### Choix d'une sortie structurée avec Pydantic
+
+## Synthèse des actualités avant l'injection dans le prompt
+
+Le endpoint `/top-news` de WorldNewsAPI retourne un grand nombre d'articles, dont plusieurs peuvent traiter du même sujet. Afin de limiter la taille du prompt envoyé au modèle et d'éviter les redondances, une première génération est effectuée par le LLM.
+
+Cette génération intermédiaire produit une synthèse concise des actualités récupérées. Le prompt système final contient ensuite à la fois les actualités brutes et cette synthèse, ce qui permet d'améliorer la pertinence des réponses tout en réduisant la quantité d'informations répétitives transmises au modèle.
+
+
+## Choix d'une sortie structurée avec Pydantic
 
 La revue de presse utilise un modèle de sortie structuré avec Pydantic :
 

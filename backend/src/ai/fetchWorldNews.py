@@ -50,7 +50,6 @@ def fetch_world_news(query: str, max_results: int = 5) -> list[dict]:
         articles.append({
             "title": title,
             "summary": summary,
-            # Nom du site source (utile pour créditer sans exposer d'URL)
             "source": article.get("source_country", ""),
             "date": (article.get("publish_date") or "")[:10],  # YYYY-MM-DD
         })
