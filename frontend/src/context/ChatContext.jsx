@@ -10,6 +10,8 @@ import {
   getChat,
 } from "@/lib/api/chatService";
 
+
+// création du contexte
 const ChatContext = createContext();
 
 export function ChatProvider({ children }) {
@@ -22,7 +24,7 @@ export function ChatProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // sidebar
+  // Recharge la liste des conversations depuis l'API (sidebar)
   async function loadChats() {
     try {
       setError("");
@@ -36,7 +38,7 @@ export function ChatProvider({ children }) {
     }
   }
 
-  // Sélectionne une conversation précise
+  // charge une conversation précise quand l'utilisateur la sélectionne
   async function selectChat(id) {
     try {
       setError("");
@@ -44,7 +46,6 @@ export function ChatProvider({ children }) {
 
       setChatId(id);
 
-      // fallback
       setMessages(Array.isArray(data?.messages) ? data.messages : []);
       return true;
     } catch (err) {
@@ -55,7 +56,7 @@ export function ChatProvider({ children }) {
     }
   }
 
-//  Message envoyé à l'assistant
+//  Envoi un message utilisateur à l'assistant
 async function sendMessage(message) {
   if (!message?.trim()) return false;
 
@@ -66,9 +67,11 @@ async function sendMessage(message) {
     const newChat = await createChat();
     currentChatId = newChat.id;
     setChatId(currentChatId);
+//     ajout de la nouvelle conversation en haut de la sidebar
     setChats((prev) => [newChat, ...prev]);
   }
 
+//    message utilisateur ajouté immédiatement à l'écran
   const userMessage = {
     role: "user",
     content: message,
@@ -78,6 +81,7 @@ async function sendMessage(message) {
     }),
   };
 
+//  Mise à jour progressive des messages avec le message utilisateur
   setMessages((prev) => [...prev, userMessage]);
 
   try {
@@ -107,7 +111,7 @@ async function sendMessage(message) {
   return true;
 }
 
-  // new chat
+  // réinitialise l'interface pour commencer une nouvelle conversation
   const startNewChat = () => {
     setError("");
     setChatId(null);
@@ -115,23 +119,13 @@ async function sendMessage(message) {
     return true;
   };
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        setError("");
-        const data = await getChats();
-        const safeChats = Array.isArray(data) ? data : [];
-        setChats(safeChats);
-      } catch (err) {
-        console.error(err);
-        setError("Impossible de charger les conversations.");
-        setChats([]);
-      }
-    };
-
-    init();
-  }, []);
-
+// Chargement des conversations au premier affichage du composant.
+useEffect(() => {
+  async function initChats() {
+    await loadChats();
+  }
+  initChats();
+}, []);
 
   return (
     <ChatContext.Provider

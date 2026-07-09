@@ -1,9 +1,11 @@
-// frontend/src/context/PressReviewContext.jsx
+// Gestionnaire des revues de presse côté frontend
+// Partage les données entre plusieurs composants sans devoir passer des props partout
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
 import {getPressReviews,createPressReview as apiCreatePressReview,} from "@/lib/api/pressReviewService";
 
+// création du contexte
 const PressReviewContext = createContext();
 
 export function PressReviewProvider({ children }) {
@@ -12,6 +14,7 @@ export function PressReviewProvider({ children }) {
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
 
+//   charge toutes les revues de presse depuis l'API
   async function loadReviews() {
     try {
       setError("");
@@ -27,6 +30,7 @@ export function PressReviewProvider({ children }) {
     }
   }
 
+//   crée une nouvelle revue de presse puis l'ajoute au début de la liste
   async function createPressReview(chatId, subject) {
     if (!chatId || !subject?.trim()) {
       setError("Le sujet de la revue est requis.");
@@ -47,8 +51,12 @@ export function PressReviewProvider({ children }) {
     }
   }
 
+// Chargement des revues de presse au premier affichage du composant
   useEffect(() => {
-    loadReviews();
+    async function initPressReview() {
+	await loadReviews();
+    }
+    initPressReview();
   }, []);
 
   return (
