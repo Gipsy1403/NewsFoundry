@@ -1,3 +1,4 @@
+
 from src.database import init_db
 from fastapi import FastAPI
 import uvicorn
@@ -8,8 +9,10 @@ import sys
 from fastapi.middleware.cors import CORSMiddleware
 from src.routes.pressReviews import router as press_reviews_router
 
+# création de l'application backend FastAPI
 app = FastAPI()
 
+# Autorise le frontend local et déployé à appeler l'API backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -22,6 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# connexion des routes principales
 app.include_router(auth_router)
 app.include_router(chats_router)
 app.include_router(press_reviews_router)

@@ -4,9 +4,9 @@ from pydantic import BaseModel
 from src.database import engine, get_session
 from src.models import Chat
 from src.auth.dependencies import get_current_user_id
-from src.ai.agent import agent
-from src.ai.history import build_history
-from src.ai.news import (build_news_system_prompt, fetch_top_news)
+from src.ai.conversationalAgent import agent
+from src.ai.convertHistoryForPydantic import convert_history_for_pydantic
+from src.ai.todayNews import (build_today_news_prompt, fetch_top_news_today_news)
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -14,6 +14,7 @@ router = APIRouter()
 
 # -----------------------------------------------------------
 # Récupère tous les chats de l'utilisateur connecté
+# -----------------------------------------------------------
 
 @router.get("/chats")
 def get_chats(
@@ -36,6 +37,7 @@ def get_chats(
 
 # -----------------------------------------------------------
 # Récupère un chat spécifique de l'utilisateur connecté
+# -----------------------------------------------------------
 
 @router.get("/chats/{chat_id}")
 def get_chat(
@@ -71,6 +73,7 @@ def get_chat(
 
 # -------------------------------------------------
 # Création d'un nouveau chat pour l'utilisateur connecté
+# -----------------------------------------------------------
 
 @router.post("/chats")
 def create_chat(
@@ -79,9 +82,9 @@ def create_chat(
     session: Session = Depends(get_session)
 ):
 
-    articles=fetch_top_news()
+    articles=fetch_top_news_today_news()
     # 1. construire system prompt + news du jour
-    context= build_news_system_prompt(articles)
+    context= build_today_news_prompt(articles)
       # Création du chat si l'utilisateur est authentifié
     chat = Chat(
             user_id=user_id,
@@ -105,6 +108,7 @@ class MessageRequest(BaseModel):
 
 # ------------------------------------------------------
 # Gestion de la conversation avec l'IA
+# -----------------------------------------------------------
 
 @router.post("/chats/{chat_id}/messages")
 def send_message(
@@ -133,7 +137,7 @@ def send_message(
         flag_modified(chat, "messages")
         
         # 4. historique avant l'ajout du message courant sinon il serait dupliqué.
-        history = build_history(chat.messages)
+        history = convert_history_for_pydantic(chat.messages)
 
         # 5. Appel de l'agent
         result=agent.run_sync(

@@ -7,6 +7,7 @@ import os
 model = MistralModel("mistral-small")
 
 
+# modèle de données pour le résumé d'un article
 class ArticleSummary(BaseModel):
     title: str = Field(
         description="Titre de l'article résumé"
@@ -15,7 +16,7 @@ class ArticleSummary(BaseModel):
         description="Résumé de l'article en lien avec le sujet demandé"
     )
 
-
+# modèle de données décrivant la réponse attendue de l'agent pour la revue de presse
 class PressReviewOutput(BaseModel):
     title: str = Field(
         description="Titre global de la revue de presse"

@@ -1,9 +1,8 @@
-import { setToken } from "./auth";
+import { setToken } from "./token";
 
 // Service d'authentification
 export async function login(email, password) {
   // Appel backend login
-
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
     method: "POST",
     headers: {

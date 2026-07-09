@@ -6,7 +6,7 @@ from pydantic_ai.exceptions import ModelHTTPError
 from src.database import get_session
 from src.models import Chat, PressReview
 from src.auth.dependencies import get_current_user_id
-from src.ai.history import build_history
+from src.ai.convertHistoryForPydantic import convert_history_for_pydantic
 from src.ai.pressReviewAgent import press_review_agent
 from src.utils.formatFrenchDate import format_french_date
 from datetime import datetime
@@ -40,7 +40,7 @@ def create_press_review(
     # -------------------------
     # 2. Historique PydanticAI
     # -------------------------
-    history = build_history(chat.messages)
+    history = convert_history_for_pydantic(chat.messages)
 
     # -------------------------
     # 3. Appel agent IA

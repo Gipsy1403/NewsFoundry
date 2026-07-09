@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../styles/footer.module.css";
 import { useChat } from "@/context/ChatContext";
 import { useRouter } from "next/navigation";
-import { logout } from "@/lib/api/auth";
+import { logout } from "@/lib/api/token";
 import Loading from "@/app/loading";
 
 export default function Footer() {

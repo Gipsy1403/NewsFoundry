@@ -1,7 +1,7 @@
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.mistral import MistralModel
 from datetime import date
-from src.ai.fetchWorldNews import fetch_world_news 
+from src.ai.explorationTopic import fetch_exploration_topic 
 
 
 model = MistralModel("mistral-small")
@@ -12,8 +12,7 @@ agent = Agent(
     deps_type=str,
     output_type=str,
     system_prompt="""
-Tu es NewsFoundry, un assistant spécialisé dans l'analyse
-et la synthèse d'actualités.
+Tu es NewsFoundry, un assistant spécialisé dans l'analyse et la synthèse d'actualités.
 
 Pour toute question relative à la date actuelle, au jour actuel, au mois actuel ou à l'année en cours, utilise l'outil current_date.
 
@@ -55,7 +54,7 @@ Recherche des articles récents sur un sujet.
 Retourne un format simplifié...
     """
 
-    return fetch_world_news(
+    return fetch_exploration_topic(
         query=query,
         max_results=max_results,
     )

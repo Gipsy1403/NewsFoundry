@@ -4,12 +4,14 @@ from sqlalchemy import Column
 from sqlalchemy.types import JSON
 from datetime import datetime, timezone
 
-
+# table de l'utilisateur
 class User(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True)
     email: str = Field(unique=True, index=True)
     hashed_password: str = Field()
 
+
+# table du chat
 class Chat(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
 
@@ -31,6 +33,7 @@ class Chat(SQLModel, table=True):
         default_factory=lambda: datetime.now(timezone.utc)
     )
 
+# table de la revue de presse
 class PressReview(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     # discussion à l'origine de la revue de presse

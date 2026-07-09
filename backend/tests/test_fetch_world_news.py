@@ -1,64 +1,126 @@
-import types
 import requests
+import src.ai.explorationTopic as ET
 
-import src.ai.fetchWorldNews as fw
 
+class DummySearchResponse:
+    """
+    Simule une réponse de l'API WorldNews.
 
-class DummyResponse:
-    def __init__(self, data=None, raise_exc=False):
-     #    données JSON qui seront renvoyées par json()
-        self._data = data or {}
-     #    indique si une exception doit être levée lors de l'appel à raise_for_status()
-        self._raise = raise_exc
+    Permet de tester le code sans effectuer de véritables requêtes HTTP.
+    """
+
+    def __init__(self, data=None, raise_error=False):
+        self.data = data or {}
+        self.raise_error = raise_error
 
     def raise_for_status(self):
-     #    simule une erreur HTTP si _raise est True, sinon ne fait rien
-        if self._raise:
-            raise requests.RequestException("fail")
+        """Simule une erreur HTTP si demandé."""
+        if self.raise_error:
+            raise requests.RequestException("Erreur API")
 
     def json(self):
-     #    retourne les données JSON simulées
-        return self._data
+        """Retourne les données simulées de l'API."""
+        return self.data
 
-# --------------------------------
-# simule l'absence de clé API
-def test_fetch_world_news_no_api_key(monkeypatch):
-    monkeypatch.setattr(fw, "WORLD_NEWS_API_KEY", None)
-#     appelle la fonction fetch_world_news() avec un mot-clé de recherche et vérifie que le résultat est une liste vide
-    res = fw.fetch_world_news("bitcoin")
-    assert res == []
 
-# --------------------------------
-# simule une clé API valide mais une exception de requête pour tester le comportement de la fonction fetch_world_news()
-def test_fetch_world_news_request_exception(monkeypatch):
-    monkeypatch.setattr(fw, "WORLD_NEWS_API_KEY", "key")
+def test_fetch_world_news_without_api_key_returns_empty_list(monkeypatch):
+    """
+    Vérifie qu'aucun appel API n'est effectué
+    lorsqu'aucune clé API n'est configurée.
+    """
+    monkeypatch.setattr(ET, "WORLD_NEWS_API_KEY", None)
+
+    result = ET.fetch_exploration_topic("bitcoin")
+
+    assert result == []
+
+
+def test_fetch_world_news_request_error_returns_empty_list(monkeypatch):
+    """
+    Vérifie qu'une erreur réseau est correctement gérée
+    et qu'une liste vide est renvoyée.
+    """
+    monkeypatch.setattr(ET, "WORLD_NEWS_API_KEY", "key")
 
     def fake_get(*args, **kwargs):
-        raise requests.RequestException()
+        """Simule une erreur lors de la requête HTTP."""
+        raise requests.RequestException("Erreur réseau")
 
-    monkeypatch.setattr(fw.requests, "get", fake_get)
-# appelle la fonction fetch_world_news() et vérifie que le résultat est une liste vide en cas d'exception de requête
-    res = fw.fetch_world_news("query")
-    assert res == []
+    # Remplace requests.get par une version simulée.
+    monkeypatch.setattr(ET.requests, "get", fake_get)
 
-# --------------------------------
-# simule une clé API valide et une réponse JSON contenant des articles pour tester le comportement de la fonction fetch_world_news() en cas de succès
-def test_fetch_world_news_success(monkeypatch):
-    monkeypatch.setattr(fw, "WORLD_NEWS_API_KEY", "key")
+    result = ET.fetch_exploration_topic("bitcoin")
 
-    data = {
+    assert result == []
+
+
+def test_fetch_world_news_success_formats_articles(monkeypatch):
+    """
+    Vérifie que les articles retournés par l'API
+    sont correctement filtrés et formatés.
+    """
+    monkeypatch.setattr(ET, "WORLD_NEWS_API_KEY", "key")
+
+    # Réponse simulée de l'API.
+    payload = {
         "news": [
-            {"title": "  ", "summary": "no title"}, # article avec titre vide, devrait être ignoré
-            {"title": "Titre 1", "summary": "Résumé 1", "source_country": "FR", "publish_date": "2026-06-23T12:00:00"},
+            # Cet article doit être ignoré (titre vide).
+            {"title": " ", "summary": "Article ignoré"},
+            {
+                "title": "Titre 1",
+                "summary": "Résumé 1",
+                "source_country": "FR",
+                "publish_date": "2026-06-23T12:00:00",
+            },
         ]
     }
 
     def fake_get(url, params=None, timeout=None):
-        return DummyResponse(data=data)
+        """
+        Vérifie les paramètres envoyés à l'API
+        puis retourne une réponse simulée.
+        """
+        assert params["number"] == 5
+        assert timeout == 10
 
-    monkeypatch.setattr(fw, "requests", types.SimpleNamespace(get=fake_get))
+        return DummySearchResponse(payload)
 
-    res = fw.fetch_world_news("q", max_results=5)
-    assert isinstance(res, list)
-    assert len(res) == 1
-    assert res[0]["title"] == "Titre 1"
+    monkeypatch.setattr(ET.requests, "get", fake_get)
+
+    result = ET.fetch_exploration_topic("q", max_results=5)
+
+    # Seul l'article valide doit être conservé.
+    assert result == [
+        {
+            "title": "Titre 1",
+            "summary": "Résumé 1",
+            "source": "FR",
+            "date": "2026-06-23",
+        }
+    ]
+
+
+def test_fetch_world_news_limits_max_results_between_1_and_10(monkeypatch):
+    """
+    Vérifie que le nombre de résultats demandés
+    est limité entre 1 et 10.
+    """
+    monkeypatch.setattr(ET, "WORLD_NEWS_API_KEY", "key")
+
+    # Stocke les valeurs réellement envoyées à l'API.
+    observed_numbers = []
+
+    def fake_get(url, params=None, timeout=None):
+        observed_numbers.append(params["number"])
+        return DummySearchResponse({"news": []})
+
+    monkeypatch.setattr(ET.requests, "get", fake_get)
+
+    # Valeur inférieure au minimum.
+    ET.fetch_exploration_topic("q", max_results=0)
+
+    # Valeur supérieure au maximum.
+    ET.fetch_exploration_topic("q", max_results=99)
+
+    # Les valeurs doivent être limitées à 1 et 10.
+    assert observed_numbers == [1, 10]

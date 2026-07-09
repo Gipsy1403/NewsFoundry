@@ -1,4 +1,4 @@
-import { getToken, logout } from "./auth";
+import { getToken, logout } from "./token";
 
 // Requêtes API avec gestion du token d'authentification
 export async function apiFetch(endpoint, options = {}) {

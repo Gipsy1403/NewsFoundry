@@ -1,7 +1,7 @@
 import os
 import requests
 from datetime import date
-from src.ai.agent import agent
+from src.ai.conversationalAgent import agent
 
 WORLD_NEWS_API_KEY = os.getenv("WORLD_NEWS_API_KEY")
 WORLD_NEWS_API_URL = "https://api.worldnewsapi.com/top-news"
@@ -9,7 +9,7 @@ WORLD_NEWS_API_URL = "https://api.worldnewsapi.com/top-news"
 # ---------------------------------------------------
 # Récupération des actualités du jour sur WorldNews API
 
-def fetch_top_news() -> list[dict]:
+def fetch_top_news_today_news() -> list[dict]:
     """
     Récupère les actualités du jour depuis World News API.
     Appelle le endpoint /top-news de World News API.
@@ -69,7 +69,7 @@ def fetch_top_news() -> list[dict]:
 # --------------------------------------------------
 # Résume les actualités
 
-def summarize_news(articles: list[dict]) -> str:
+def summarize_today_news(articles: list[dict]) -> str:
     """
     Génère une synthèse des actualités afin d'obtenir un prompt plus court.
     """
@@ -111,7 +111,7 @@ Actualités :
 # ----------------------------------------------------------
 # Construit le prompt système complet qui sera envoyé à l'IA en y intégrant les actualités du jour et leur synthèse
 
-def build_news_system_prompt(articles: list[dict]) -> str:
+def build_today_news_prompt(articles: list[dict]) -> str:
     """
     Construit le prompt système complet : base fixe + actualités du jour
     Appelé une seule fois à la création du chat, résultat sauvegardé en BDD.
@@ -125,7 +125,7 @@ def build_news_system_prompt(articles: list[dict]) -> str:
         for a in articles
     )
 
-    summary = summarize_news(articles)
+    summary = summarize_today_news(articles)
 
     return f"""
 MISSION

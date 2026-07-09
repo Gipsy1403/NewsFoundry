@@ -1,7 +1,7 @@
 from pydantic_ai.messages import ModelRequest, ModelResponse, UserPromptPart, TextPart
 
 
-def build_history(messages):
+def convert_history_for_pydantic(messages):
     """
     Convertit l'historique JSON stocké en BDD
     (liste de {"role": "user"|"assistant", "content": str})

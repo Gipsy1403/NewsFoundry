@@ -3,6 +3,8 @@ from src.models import User
 from sqlmodel import SQLModel, Session, create_engine, select
 from passlib.context import CryptContext
 
+# Récupère l'URL de la base de données depuis les variables d'environnement.
+# Si aucune variable d'environnement n'est définie, utilise une base de données SQLite locale.
 DATABASE_URL = os.getenv("DATABASE_URL","sqlite:///test.db")
 
 engine = create_engine(DATABASE_URL, echo=True)
