@@ -100,7 +100,7 @@ Métriques utiles
 
 Comment suivre
 
-- Collecter des métriques dans un service centralisé ou un fichier de logs.
+- Collecter des métriques dans un service centralisé.
 - Visualiser l’évolution des latences et des coûts.
 - Prendre des décisions basées sur des seuils : par exemple, alerter si le temps de réponse dépasse 5 secondes.
 
@@ -132,8 +132,23 @@ Le principe consiste à indexer les articles récupérés dans une base vectorie
 - possibilité de traiter un volume d'articles beaucoup plus important ;
 - diminution de la taille du contexte envoyé au modèle.
 
+
 ## Conclusion
 
 - Le projet peut gagner en performance en optimisant le contexte IA, en introduisant du caching et en mesurant les temps de réponse.
 - L’expérience utilisateur s’améliore nettement avec du streaming et des retours visuels immédiats.
 - Un monitoring léger permet de suivre l’impact des changements et de garder le service stable.
+
+
+
+# Perspectives d'évolution fonctionnelle
+
+L'application dispose déjà de l'authentification, de la création de chats et de la génération de revues de presse. Les évolutions prévues sont les suivantes :
+
+- Ajouter une fonctionnalité d'inscription des utilisateurs avec validation des données, vérification de l'unicité de l'adresse e-mail et chiffrement du mot de passe avant son enregistrement.
+- Permettre la modification et la suppression des chats via des routes `PATCH` et `DELETE`, avec vérification que le chat appartient bien à l'utilisateur authentifié.
+- Permettre la modification et la suppression des revues de presse en appliquant les mêmes contrôles de sécurité.
+- Ajouter des confirmations de suppression et des messages de succès ou d'erreur dans l'interface utilisateur.
+- Conserver une architecture sécurisée grâce au contrôle des droits via le JWT avant toute modification ou suppression.
+
+Ces évolutions s'intègrent naturellement dans l'architecture actuelle du projet sans nécessiter de refonte importante.

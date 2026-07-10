@@ -1,4 +1,4 @@
-// Centralise tous les appels HTTP liés aux chats
+// Prépare les requêtes HTTP veres le backend pour la gestion des conversations et des messages
 
 import { apiFetch } from "./apiFetch";
 
