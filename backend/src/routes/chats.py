@@ -151,8 +151,7 @@ def send_message(
         chat.messages.append(user_message)
         # Indique à SQLAlchemy que la liste des messages a été modifiée pour qu'il puisse gérer correctement la persistance des données lors du prochain commit
         flag_modified(chat, "messages")
-        
-        # 4. historique avant l'ajout du message courant sinon il serait dupliqué.
+
         history = convert_history_for_pydantic(chat.messages)
 
         # 5. Appel de l'agent

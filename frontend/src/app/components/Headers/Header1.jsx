@@ -31,7 +31,11 @@ export default function Header1({ drawerOpen, setDrawerOpen }) {
 					src="/IMGAppli/logo.png"
 					alt="NewsFoundry Logo"
 					width={148}
-					height={15} />
+					height={15}
+					style={{
+						width: "148px",
+						height: "auto",
+					}} />
 			</div>
 			<nav className={styles.bar} aria-label="Navigation principale">
 				<Link

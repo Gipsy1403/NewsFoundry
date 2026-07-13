@@ -60,6 +60,7 @@
 	border-radius: 8px;
 	padding : 0px 10px;
 	text-decoration: none;
+	cursor: pointer;
 }
 .active {
 	background-color: var(--header);
