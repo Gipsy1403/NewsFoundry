@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from pydantic import BaseModel
-from src.database import engine, get_session
+from src.database import get_session
 from src.models import Chat
 from src.auth.dependencies import get_current_user_id
 from src.ai.conversationalAgent import agent
@@ -81,24 +81,40 @@ def create_chat(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_session)
 ):
+    try:
+        # Récupération des actualités et construction du contexte
+        articles = fetch_top_news_today_news()
+        context = build_today_news_prompt(articles)
 
-    articles=fetch_top_news_today_news()
-    # 1. construire system prompt + news du jour
-    context= build_today_news_prompt(articles)
-      # Création du chat si l'utilisateur est authentifié
-    chat = Chat(
+        # Création du chat si l'utilisateur est authentifié
+        chat = Chat(
             user_id=user_id,
             messages=[],
             context=context,
         )
 
-#   2. sauvegarde du chat en base de données
-    session.add(chat)
-    session.commit()
-     #Recharge le chat pour avoir la bonne valeur de l'id généré par la base de données
-    session.refresh(chat)
+        # Sauvegarde du chat en base de données
+        session.add(chat)
+        session.commit()
+        # Recharge le chat pour avoir la bonne valeur de l'id généré par la base de données
+        session.refresh(chat)
 
-    return chat
+        return chat
+
+    except SQLAlchemyError:
+        # Annule la transaction et renvoie une erreur 500
+        session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur lors de la création du chat"
+        )
+    except Exception:
+        # Erreurs externes (API d'actualités, construction du prompt, etc.)
+        session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur lors de la création du chat"
+        )
 
 
 

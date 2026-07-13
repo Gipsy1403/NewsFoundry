@@ -115,8 +115,6 @@ def build_today_news_prompt(articles: list[dict]) -> str:
     """
     Construit le prompt système complet : base fixe + actualités du jour
     Appelé une seule fois à la création du chat, résultat sauvegardé en BDD.
-    
-    En cas d'erreur, on dégrade proprement : le chat fonctionne avec le prompt de base sans les news
 
     """
 

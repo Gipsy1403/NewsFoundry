@@ -38,6 +38,12 @@ Ces erreurs permettent aussi d'afficher un message compréhensible à l'utilisat
 - **403** — `Accès interdit`
 - La logique d'autorisation empêche toute modification d'un chat appartenant à un autre utilisateur.
 
+
+**POST `/chats`**
+
+- **500** — `Erreur lors de la création du chat`
+- Cause : erreur lors de la récupération des actualités ou problème lors de la sauvegarde en base de données.
+
 ---
 
 ### Revues de presse

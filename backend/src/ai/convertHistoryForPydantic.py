@@ -5,8 +5,7 @@ def convert_history_for_pydantic(messages):
     """
     Convertit l'historique JSON stocké en BDD
     (liste de {"role": "user"|"assistant", "content": str})
-    en une liste de ModelMessage utilisable comme message_history
-    par PydanticAI.
+    en une liste utilisable par PydanticAI.
     """
 
     history = []

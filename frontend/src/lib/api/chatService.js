@@ -1,4 +1,4 @@
-// Prépare les requêtes HTTP veres le backend pour la gestion des conversations et des messages
+// Prépare les requêtes HTTP vers le backend pour la gestion des conversations et des messages
 
 import { apiFetch } from "./apiFetch";
 

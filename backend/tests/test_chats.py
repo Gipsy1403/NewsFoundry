@@ -152,3 +152,22 @@ def test_unknown_chat_returns_404(client):
 
     assert response.status_code == 404
     assert response.json()["detail"] == "Chat introuvable"
+
+
+def test_create_chat_handles_news_fetch_error(client, monkeypatch):
+    """
+    Simule une erreur lors de la récupération des actualités
+    et vérifie que la création de chat renvoie un 500.
+    """
+    import src.routes.chats as chats_module
+
+    def fake_fetch():
+        raise Exception("Service d'actualités indisponible")
+
+    # Remplace la fonction de récupération des actualités
+    monkeypatch.setattr(chats_module, "fetch_top_news_today_news", fake_fetch)
+
+    response = client.post("/chats")
+
+    assert response.status_code == 500
+    assert response.json()["detail"] == "Erreur lors de la création du chat"

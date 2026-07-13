@@ -134,22 +134,3 @@ def list_press_reviews(
 
     return reviews
 
-
-# # Détail d'une revue de presse spécifique
-# @router.get("/press-reviews/{review_id}")
-# def get_press_review(
-#     review_id: int,
-#     user_id: int = Depends(get_current_user_id),
-#     session: Session = Depends(get_session),
-# ):
-#     review = session.get(PressReview, review_id)
-
-#     if not review:
-#         raise HTTPException(status_code=404, detail="Revue introuvable")
-
-#     chat = session.get(Chat, review.chat_id)
-
-#     if not chat or chat.user_id != user_id:
-#         raise HTTPException(status_code=403, detail="Accès interdit")
-
-#     return review
