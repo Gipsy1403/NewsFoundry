@@ -89,12 +89,12 @@ export default function Footer() {
 						/>
 					</button>
 				</div>
-				{/* {error && (
+				{error && (
 					<div className={styles.errorMessage} role="alert">
 						{error}
 					</div>
 				)}
-				{loading && <Loading/>} */}
+				{loading && <Loading/>}
 			</footer>
 		</>
 	);
