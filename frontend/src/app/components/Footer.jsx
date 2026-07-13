@@ -14,7 +14,7 @@ import Loading from "@/app/loading";
 
 export default function Footer() {
 	const [message, setMessage] = useState("");
-	const { sendMessage, loading } = useChat();
+	const { sendMessage, loading, error } = useChat();
 	const router = useRouter();
 	const [inputFocus, setInputFocus] = useState(false);
 
@@ -89,6 +89,12 @@ export default function Footer() {
 						/>
 					</button>
 				</div>
+				{error && (
+					<div className={styles.errorMessage} role="alert">
+						{error}
+					</div>
+				)}
+				{loading && <Loading/>}
 			</footer>
 		</>
 	);
