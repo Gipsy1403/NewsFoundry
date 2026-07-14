@@ -133,4 +133,3 @@ def list_press_reviews(
     ).all()
 
     return reviews
-

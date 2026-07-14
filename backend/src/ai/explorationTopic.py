@@ -55,5 +55,3 @@ def fetch_exploration_topic(query: str, max_results: int = 10) -> list[dict]:
         })
 
     return articles
-
-

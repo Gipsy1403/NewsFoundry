@@ -180,5 +180,3 @@ def send_message(
             "response": result.output,
             "chat": chat.messages
         }
-
-
