@@ -69,11 +69,9 @@ def search_news(
 ) -> list[dict]:
     """
     Recherche des articles récents sur un sujet.
-
     Args:
         query: Sujet ou expression à rechercher.
         max_results: Nombre maximal d'articles à retourner.
-
     Returns:
         Une liste simplifiée d'articles trouvés.
     """

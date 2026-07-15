@@ -54,14 +54,12 @@ def get_chat(
                 status_code=404,
                 detail="Chat introuvable"
             )
-
         # 403 : pas le bon utilisateur
         if chat.user_id != user_id:
             raise HTTPException(
                 status_code=403,
                 detail="Accès interdit"
             )
-
         return chat
 
     except SQLAlchemyError:
